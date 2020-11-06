@@ -1,0 +1,23 @@
+class Solution:
+    def minCost(self, n: int, cuts: List[int]) -> int:
+        cuts=sorted(cuts+[0,n])
+        m=len(cuts)
+        dp=[[float('inf')]*m for _ in range(m)]
+        for j in range(m):
+            for i in range(j-1,-1,-1):
+                if j-i==1:
+                    dp[i][j]=0
+                else:
+                    for k in range(i+1,j):
+                        dp[i][j]=min(dp[i][j],dp[i][k]+dp[k][j]+cuts[j]-cuts[i])
+        return dp[0][m-1]# m 的话则out of index
+                        
+# 把0和n作为两个端点加入到数组中
+# 对数组进行排序。
+#加入了端点的数组就不只是切割点数组了，还可以作为分段。
+#dp[i][j]定义为切割cuts[i]到cuts[j]需要的cost是多少
+#给定cuts[i]和cuts[j]以后，能下刀的地方只有cuts[i+1]到cuts[j-1]
+    #cuts[i], cuts[i+1], cuts[i+2]…cuts[j-1]，cuts[j]
+
+    #dp[i][j] = min(dp[i][j], dp[i][k] + dp[k][j] + cuts[j] - cuts[i])
+#https://blog.csdn.net/richarddia/article/details/108051037
