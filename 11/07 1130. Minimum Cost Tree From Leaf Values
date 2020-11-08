@@ -1,0 +1,16 @@
+class Solution:
+    def mctFromLeafValues(self, arr: List[int]) -> int:
+        res=0
+        while(len(arr)>1):
+            min_index=arr.index(min(arr))
+            if 0<min_index<len(arr)-1:
+                res+=min(arr[min_index+1],arr[min_index-1])*arr[min_index]
+            else:
+                if min_index==0:
+                    res+=arr[min_index]*arr[1]
+                else:
+                    res+=arr[min_index]*arr[-2]
+            arr.pop(min_index)
+        return res
+#https://www.freesion.com/article/6319424267/
+#https://www.geeksforgeeks.org/tree-traversals-inorder-preorder-and-postorder/
