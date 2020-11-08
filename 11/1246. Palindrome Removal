@@ -1,0 +1,17 @@
+class Solution:
+    def minimumMoves(self, arr: List[int]) -> int:
+        n = len(arr)
+        dp = [[float('inf')] * n for _ in range(n)]
+        for i in range(n - 1, -1, -1):
+            for j in range(i, n):
+                # to deal with even length palindrome as well, we pre fill for length 2
+                if i == j or (arr[i] == arr[j] and j - i == 1 ):                              
+                    dp[i][j] = 1
+                    continue
+                if arr[i] == arr[j]:
+                    dp[i][j] = dp[i + 1][j - 1]     
+                for k in range(i, j):
+                    dp[i][j] = min( dp[i][j], dp[i][k] + dp[k+1][j] )
+        return dp[0][- 1]    
+#https://leetcode.com/problems/palindrome-removal/discuss/656398/python-DP-My-thought-process-explained
+#https://blog.csdn.net/AgoniAngel/article/details/105117989?utm_medium=distribute.pc_relevant.none-task-blog-searchFromBaidu-5.pc_relevant_is_cache&depth_1-utm_source=distribute.pc_relevant.none-task-blog-searchFromBaidu-5.pc_relevant_is_cache
