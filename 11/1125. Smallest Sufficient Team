@@ -1,0 +1,17 @@
+class Solution:
+    def smallestSufficientTeam(self, req_skills: List[str], people: List[List[str]]) -> List[int]:
+        dp = {0:[]}
+        d = {v:i for i,v in enumerate(req_skills)}
+        
+        for i,p in enumerate(people):
+            bits = 0
+            for bit in p: bits |= (1<<d[bit])
+            
+            for reached_skill, need in list(dp.items()):
+                add_him = reached_skill | bits
+                if add_him not in dp or len(dp[add_him])>len(need)+1:
+                    dp[add_him]=need+[i]
+            
+        return dp[(1<<len(req_skills))-1]
+#https://blog.csdn.net/zjucor/article/details/95881811
+#https://leetcode.com/problems/smallest-sufficient-team/discuss/334572/Python-DP-Solution
