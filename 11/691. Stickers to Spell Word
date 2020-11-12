@@ -1,0 +1,39 @@
+class Solution:
+    def minStickers(self, stickers: List[str], target: str) -> int:
+        from collections import Counter
+        n = len(target)
+        ns = (1<<n)
+        dp = [-1]*ns
+        dp[0] = 0
+        print(stickers)
+        t_count = Counter(target)
+        stickers = [Counter(x) & t_count for x in stickers]
+        print (stickers)
+        print (t_count)
+        print (len(stickers))
+        i = 0
+        while i<len(stickers):
+            if any(stickers[i]&stickers[j]==stickers[i] for j in range(len(stickers)) if i!=j):
+                stickers.pop(i)
+                i -= 1
+            i += 1
+
+        for state in range(ns):
+            if dp[state]==-1:
+                continue
+            for sticker in stickers:
+                now = state
+                for letter in sticker.elements():
+                    for i in range(n):
+                        if now & (1<<i) == 0 and target[i]==letter:
+                            now |= (1<<i)
+                            break
+                if dp[now]==-1 or dp[now]> dp[state]+1:
+                    dp[now] = dp[state]+1
+
+        return dp[ns-1]
+#https://blog.csdn.net/lemonmillie/article/details/85228013
+#https://docs.python.org/2/library/collections.html
+#https://www.programiz.com/python-programming/break-continue
+#https://pymotw.com/2/collections/counter.html
+#solution
