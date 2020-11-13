@@ -1,0 +1,19 @@
+class Solution:
+    def shortestSuperstring(self, A: List[str]) -> str:
+        if len(A)==1:
+            return A[0]
+        B=sorted (A,key=lambda s:len(s))
+        Ans=[B[0]]
+        
+        return self.shortest(B,Ans)
+    
+    def shortest(self,B,Ans):
+        
+        if len(B)==0:
+            return Ans
+        if not B[0] in Ans:
+            return min(self.shortest(B[1:],Ans+[B[0]]),self.shortest(B[1:],[B[0]]+Ans), key = lambda x: len(x))
+        else:
+            return self.shortest(B[1:],Ans)
+        
+#https://leetcode.com/problems/find-the-shortest-superstring/discuss/918185/Python-or-Recursive-solution-Faster-then-100-of-python-submissions
