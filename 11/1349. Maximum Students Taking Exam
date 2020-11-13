@@ -1,0 +1,27 @@
+class Solution:
+    def maxStudents(self, seats: List[List[str]]) -> int:
+        m,n=len(seats),len(seats[0])
+        seats=[int(''.join(s).replace('.','1').replace('#','0'),2) for s in seats]
+        valid=[]
+        for i in range(2**n):
+            bs=bin(i)[2:]
+            if '11' not in bs:
+                valid.append((i,bs.count('1')))
+                
+        dp=[[0]*(2**n) for _ in range(m)]
+        for i,v in valid:
+            if seats[0]&i==i:
+                dp[0][i]=v
+        for i in range(1,m):
+            for j,v in valid:
+                if seats[i]&j==j:
+                    for k,_ in valid:
+                        if j&(k<<1)==0 and j&(k>>1)==0:#往左右移动一位 没有重复
+                            dp[i][j]=max(dp[i][j],dp[i-1][k]+v)
+        return max(dp[-1])
+#https://blog.csdn.net/zjucor/article/details/104565426/
+#思路：前一行的结果只取决于上一行的结果，所以用DP，然后可以用bit mask来表示一行的状态
+#状态压缩动态规划 用二进制数表示每个座位有没有人坐 如0011 表示 无无有有，记为3
+#题解：用二进制，表示每一行的每种安排的可能性。然后再进行动态规划，dp[i][j] = max{dp[i-1][k]+num[j]} 其中j 表示第i行的某个安排的二进制数，k同理是i-1行的某个安排，k和j满足不作弊的条件。num[j]表示j安排下，坐了多少学生。由于数组长度最多为8，所以状态数组的第二个维度最多为2^8-1，
+#https://www.geeksforgeeks.org/python-int-function/
+#http://www.trytoprogram.com/python-programming/python-built-in-functions/bin/
