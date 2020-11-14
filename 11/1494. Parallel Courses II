@@ -1,0 +1,51 @@
+class Solution:
+    def minNumberOfSemesters(self, n: int, dependencies: List[List[int]], k: int) -> int:
+        #没看懂答案
+        dep={}#记录依赖于某节点的节点列表
+        for a, b in dependencies:
+            if a not in dep:
+                dep[a] = []
+            dep[a].append(b)
+
+        @lru_cache(typed=False, maxsize=128000000)
+        def dp(stat):
+            if stat == 0:
+                return 0
+
+            all_nodes = []
+            for i in range(1,n+1):
+                if stat & (1 << i): #通过stat获取，当前考虑的所有课程（在不考虑依赖关系的情况下）
+                    all_nodes.append(i)
+
+            nodes = []
+            dep_cnt = {node: 0 for node in all_nodes}
+            for node in all_nodes:
+                if node in dep:
+                    for next in dep[node]:
+                        if next in dep_cnt:
+                            dep_cnt[next] += 1
+
+            for node, cnt in dep_cnt.items(): #筛选当前学期可供选择的所有课程
+                if cnt == 0:
+                    nodes.append(node)
+
+            if len(nodes) <= k: #若课程数量小于k,则当前学期上所有的课程
+                new_stat = stat
+                for node in nodes:
+                    new_stat &= ~(1 << node) #可用异或代替
+                ans = 1 + dp(new_stat)
+                return ans
+            else:
+                ans = 0x7fffffff
+                for combi in combinations(nodes, k): #枚举所有数量为k的子集
+                    new_stat = stat
+                    for node in combi:
+                        new_stat &= ~(1 << node)
+                    ans = min(ans, 1 + dp(new_stat))
+
+                return ans
+
+        return dp((1 << n+1)-2 ) #剪2是因为去掉最低向和最高项，因为此代码的循环是从1到n,最小左移为1，最大左移为n
+#https://wiki.python.org/moin/BitwiseOperators
+#https://www.programiz.com/python-programming/operators
+#https://www.icode9.com/content-4-717729.html
