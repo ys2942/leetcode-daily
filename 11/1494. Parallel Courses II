@@ -1,6 +1,5 @@
 class Solution:
     def minNumberOfSemesters(self, n: int, dependencies: List[List[int]], k: int) -> int:
-        #没看懂答案
         dep={}#记录依赖于某节点的节点列表
         for a, b in dependencies:
             if a not in dep:
