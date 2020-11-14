@@ -1,0 +1,34 @@
+class Solution:
+    def numberWays(self, hats: List[List[int]]) -> int:
+        from collections import defaultdict
+        from functools import lru_cache
+        mod=10**9+7
+        h2p=defaultdict(list)
+        for idx,hs in enumerate(hats):
+            for h in hs:
+                h2p[h].append(idx)
+        hs=list(h2p.keys())
+        
+        @lru_cache(None)
+        def dp(i,state):
+            if bin(state).count('1')==len(hats):
+                return 1
+            if i==len(h2p):
+                return 0
+            
+            res=dp(i+1,state)
+            for p in h2p[hs[i]]:
+                if state&(1<<p):
+                    continue
+                    
+                res+=dp(i+1,state|(1<<p))
+                res%=mod
+            return res
+        return dp(0,0)
+#自然枚举帽子：一顶帽子可以由不同的人来戴。
+#https://blog.csdn.net/zjucor/article/details/105929746
+#https://blog.csdn.net/qq_35752161/article/details/105904639
+#https://blog.csdn.net/wzqnls/article/details/78506022
+#https://blog.csdn.net/qq_42882518/article/details/100560408
+#https://blog.konghy.cn/2016/04/20/python-cache/
+#https://blog.csdn.net/hollybobo79/article/details/100511788
