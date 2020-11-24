@@ -1,0 +1,11 @@
+class Solution:
+    def nextGreaterElement(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        dic,stack={},[]
+        for num in nums2:
+            while stack and stack[-1]<num: #为什么要用while而不用if？ 因为一个num可能是stack中好几个元素的右边第一个最大值
+                dic[stack.pop()]=num
+            stack.append(num)
+        return [dic.get(i,-1) for i in nums1]
+        
+#https://blog.csdn.net/huhehaotechangsha/article/details/80782023
+#https://blog.csdn.net/qq_21275321/article/details/82987456
