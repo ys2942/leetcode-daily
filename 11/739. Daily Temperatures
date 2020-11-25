@@ -1,0 +1,18 @@
+class Solution:
+    def dailyTemperatures(self, T: List[int]) -> List[int]:
+        N=len(T)
+        stack=[]
+        res=[0]*N
+        for i,t in enumerate(T):
+            while stack and stack[-1][0]<t:
+                oi=stack.pop()[-1]
+                res[oi]=i-oi
+            stack.append((t,i))
+        return res
+#栈
+#如果正序遍历的话需要一个栈，栈的操作是这样的：
+#如果栈是空或者栈顶的元素小于当前元素，那么说明前面的这天的温度小于今天的，所以直接弹出前面这天，并且把他这天的结果设置为和今天的位置差。
+#需要注意的是，无论当天的温度是高是低，它的结果的确定需要根据后面确定，所以要入栈。
+#https://blog.csdn.net/fuxuemingzhu/article/details/79285081?utm_source=blogxgwz8
+                
+        
