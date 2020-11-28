@@ -1,0 +1,29 @@
+class Solution:
+    def maxWidthRamp(self, A: List[int]) -> int:
+        n=len(A)
+        stack=[]
+        res=0
+        for i in range(n):
+            if not stack or A[i]<A[stack[-1]]:
+                stack.append(i)
+        for i in range(n-1,-1,-1):
+            while stack and A[i]>=A[stack[-1]]:
+                res=max(res,i-stack.pop())
+        return res
+        
+       #second solution 
+class Solution:
+    def maxWidthRamp(self, A: List[int]) -> int:
+        n=len(A)
+        stack=[]
+        res=0
+        for i, a in enumerate(A):
+            if not stack or stack[-1][1]>a:
+                stack.append((i,a))
+            else:
+                x=len(stack)-1
+                while x>=0 and stack[x][1]<=a:
+                    res=max(res,i-stack[x][0])
+                    x-=1
+        return res
+#https://blog.csdn.net/fuxuemingzhu/article/details/85223568
