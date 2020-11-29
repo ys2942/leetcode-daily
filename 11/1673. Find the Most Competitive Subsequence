@@ -1,0 +1,13 @@
+class Solution:
+    def mostCompetitive(self, nums: List[int], k: int) -> List[int]:
+        stack=[]
+        for index, num in enumerate (nums):
+            while stack and stack[-1]>num and len(stack)+len(nums)-index>k:
+                stack.pop()
+            if len(stack)<k:
+                stack.append(num)
+        return stack                
+#Here, we maintain an increasing mono-stack. The trick is that there is a capacity constraint of k. You are only allowed to pop out of the stack if the sum of elements on stack len(stack) and remaining elements in nums (len(nums) - i) is more than enough for k.
+
+#Implementation (O(N) time & O(N) space)
+        
