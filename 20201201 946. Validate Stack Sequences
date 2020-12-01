@@ -1,0 +1,18 @@
+class Solution:
+    def validateStackSequences(self, pushed: List[int], popped: List[int]) -> bool:
+        stack=[]
+        N=len(pushed)
+        pi=0
+        for i in range(N):
+            if stack and popped[i]==stack[-1]:
+                stack.pop()
+            else:
+                while pi<N and pushed[pi]!=popped[i]:
+                    stack.append(pushed[pi])
+                    pi+=1
+                pi+=1
+        return not stack
+#我们可以设计这个栈来验证．如果遍历完整个pop序列发现并不能排空栈，那说明其中有问题．
+#https://blog.csdn.net/fuxuemingzhu/article/details/84495797
+#先找到pushed跟popped相同的点 
+#https://www.youtube.com/watch?v=zeCItXGLw0w
