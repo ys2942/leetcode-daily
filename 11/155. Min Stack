@@ -1,0 +1,37 @@
+class MinStack:
+
+    def __init__(self):
+        """
+        initialize your data structure here.
+        """
+        self.stack=[]
+        self.sm=[]
+
+    def push(self, x: int) -> None:
+        self.stack.append(x)
+        if not self.sm or self.sm[-1]>=x:
+            self.sm.append(x)
+            
+
+    def pop(self) -> None:
+        if self.sm[-1]==self.stack[-1]:
+            self.sm.pop()
+        self.stack.pop()
+        
+
+    def top(self) -> int:
+        return self.stack[-1]
+
+    def getMin(self) -> int:
+        return self.sm[-1]
+#维护两个自己构造的”栈“对象， 在这里为两个数组stack和sm,其中sm的栈顶为当前stack中最小元素；
+#在push时要判断sm是否为空，如果为空或者非空但是栈顶元素大于等于插入值的 需要在sm中插入x；
+#在pop时，s的元素被删除了，那么sm中的也应该被删除；
+#通过这些操作维护sm能很巧妙在O（1）复杂度得到最小值。
+
+# Your MinStack object will be instantiated and called as such:
+# obj = MinStack()
+# obj.push(x)
+# obj.pop()
+# param_3 = obj.top()
+# param_4 = obj.getMin()
