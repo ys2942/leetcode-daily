@@ -1,0 +1,23 @@
+class Solution:
+    def parseBoolExpr(self, expression: str) -> bool:
+        st=[]
+        for s in expression:
+            if s ==')':
+                A=[]
+                while st:
+                    a=st.pop()
+                    if a=='(':
+                        break
+                    A.append(a)
+                op=st.pop()
+                if op=='&':
+                    st.append('f' if 'f' in A else 't')
+                elif op=='|':
+                    st.append('t' if 't' in A else 'f')
+                else:
+                    st.append('t' if A[0]=='f' else 'f')
+            else:
+                st.append(s)
+        return True if st[0]=='t' else False
+        
+#解题思路：本题和表达式运算的题目相似。遍历expression并将每一个字符依次入栈，如果遇到')'，则找出离栈顶最近的'('，计算出括号之内的表达式的值并将该值入栈，直到expression遍历完成为止。
