@@ -1,0 +1,34 @@
+class Solution:
+    def expand(self, S: str) -> List[str]:
+        rslt,curr,append=[''],[],False
+        for c in S:
+            if c==',':
+                continue
+            elif c=='{':
+                append=True
+            elif c=='}':
+                append=False
+                temp=[]
+                while curr:
+                    t=curr.pop()
+                    temp+=[x+t for x in rslt]
+                rslt=temp
+            elif append:
+                curr.append(c)
+            else:
+                rslt=[x+c for x in rslt]
+        return sorted(rslt)
+#https://pythonprinciples.com/blog/lists-of-strings-in-python/
+
+#2
+class Solution:
+    def expand(self, S: str) -> List[str]:
+        expr=S.replace('{','|').replace('}','|').split('|')
+        res=[""]
+        for e in expr:
+            res=map(lambda t: ''.join(t),itertools.product(res,e.split(',')))
+        return sorted(res)
+#https://leetcode.com/problems/brace-expansion/discuss/916398/Python-5-lines
+#product(list1, list2) 依次取出list1中的每1个元素，与list2中的每1个元素，组成元组，然后，将所有的元组组成一个列表，返回。
+#https://www.cnblogs.com/xxxxxxxxx/p/11544432.html
+#https://www.geeksforgeeks.org/join-function-python/
