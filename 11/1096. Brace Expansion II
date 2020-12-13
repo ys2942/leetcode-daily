@@ -1,0 +1,28 @@
+class Solution:
+    def braceExpansionII(self, expression: str) -> List[str]:
+        from itertools import product
+        if len(expression)==0: return ''
+        st=[[]]
+        cnt=start=0
+        for i,v in enumerate(expression):
+            if v=='{':
+                if cnt==0: start=i+1
+                cnt+=1
+            elif v=='}':
+                # 另外一个笛卡尔乘积的元素
+                cnt-=1
+                if cnt==0: st[-1].append(self.braceExpansionII(expression[start:i]))
+            elif v==',':
+                # 开辟另外一个数组存放另外一个新的笛卡尔乘积
+                if cnt==0: st.append([])
+            else:
+                # 独立的字母，也看作笛卡尔乘积的一个元素，因为只有一个字母，所以笛卡尔乘积正好只选整个！
+                if cnt==0: st[-1].append([v])
+        
+        res=set()
+        for s in st:
+            tmp=product(*s) # 计算一个笛卡尔乘积
+            tmp=map(''.join, tmp) 
+            res=res|set(tmp) # 不同笛卡尔乘积结果取union
+        return sorted(res)
+#https://blog.csdn.net/zjucor/article/details/93382636
