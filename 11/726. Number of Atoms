@@ -1,0 +1,23 @@
+class Solution:
+    def countOfAtoms(self, formula: str) -> str:
+        dic,coeff,stack,elem,cnt,i=collections.defaultdict(int),1,[],'',0,0
+        for c in formula[::-1]:
+            if c.isdigit():
+                cnt+=int(c)*(10**i)
+                i+=1
+            elif c==')':
+                stack.append(cnt or 1)
+                coeff*=cnt or 1
+                i=cnt=0
+            elif c=='(':
+                coeff//=stack.pop()
+                i=cnt=0
+            elif c.isupper():
+                elem=c+elem
+                dic[elem]+=(cnt or 1)*coeff
+                elem=''
+                i=cnt=0
+            elif c.islower():
+                elem=c+elem
+        return ''.join(k+str(v>1 and v or '') for k,v in sorted(dic.items()))
+#https://blog.csdn.net/xx_123_1_rj/article/details/80803757
