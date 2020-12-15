@@ -1,0 +1,23 @@
+class Solution(object):
+    def minSubArrayLen(self, s, nums):
+        """
+        :type s: int
+        :type nums: List[int]
+        :rtype: int
+        """
+        cur_sum = 0
+        tail = 0
+        min_len = -1
+        if sum(nums)<s:
+            return 0
+        for head, val in enumerate(nums):
+            cur_sum = cur_sum + val
+            while(cur_sum>=s):
+                if min_len == -1:
+                    min_len = head-tail+1
+                else:
+                    min_len = min(min_len, head-tail+1)
+                cur_sum = cur_sum - nums[tail]
+                tail = tail+1
+
+        return min_len
