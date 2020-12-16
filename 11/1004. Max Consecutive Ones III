@@ -1,0 +1,50 @@
+class Solution:
+    def longestOnes(self, A: List[int], K: int) -> int:
+        left,right,zeros,maxlen=0,0,0,0
+        while right<len(A):
+            if A[right]==0:
+                zeros+=1
+            while zeros>K:
+                if A[left]==0:
+                    zeros-=1
+                left+=1
+            maxlen=max(maxlen,right-left+1)
+            right+=1
+        return maxlen
+    
+#题意：
+
+#给定一个包含若干整数的数列A（仅包含数字0和1），和一个整数K，求出数列A中最长连续1的个数（可以使k个0变为1，以使最长仅包含1的数列长度最长）。
+
+#分析：
+
+#最长子序列的衍生题，步骤如下：
+
+#从左往右遍历序列，同时记录最左端的位置left和最右端的位置right以及[left, right]之间包含0的个数。
+#如若遍历的当前位置为0， 且当前使用0 的个数小于k，那么可以就可以把当前位置记入当前子序列区间。
+#如果上述情况下， 当前包含0的个数大于等于k，那么及说明当前子序列区间中包含的0的个数已经达到了最大，所以需要从左往右查找子序列中包含的第一个0的位置，即将包含的第一个0之前的序列去除掉，以使[ left, right]包含0的个数不足k个。
+#每次将上述问题处理之后，统计当前序列的长度right-left+1 是否为当前最大，如果是，则替换即可。
+
+
+
+
+class Solution:
+    def longestOnes(self, A: List[int], K: int) -> int:
+        left,right=0,0
+        while right<len(A):
+            if A[right]==0:
+                K-=1
+            if K<0:
+                if A[left]==0:
+                    K+=1
+                left+=1
+            right+=1
+        return right-left
+#第二种方法：
+#https://blog.csdn.net/xn761388760/article/details/88376298
+#借助两个下标，分别指向当前位置最长连续1的左右两端。
+#如果 当前位置为0的时候，那么0计数器就减1。
+#如果0计数器小于0的时候，即可说明当前包含0的个数超量，因此 这时左端点需要跟随右端点的移动而后移。
+#最后只需要返回两个端点间的距离即可。所以i只有在窗口内0的个数不满足要求时才会推进，j是一直推进的。在这个过程中，窗口的长度是不会减小的。会先增大到最佳长度，然后不变，直到最后结束。
+#https://blog.csdn.net/Orientliu96/article/details/104233101
+#
