@@ -1,0 +1,22 @@
+class Solution:
+    def numberOfSubstrings(self, s: str) -> int:
+        if len(s)<=2:
+            return 0
+        length=len(s)
+        left,right=0,2
+        ans=0
+        while left<length-2:
+            window=s[left:right+1]
+            if 'a' in window and 'b' in window and 'c' in window:
+                ans+=length-right
+                left+=1
+            else:
+                right+=1
+                if right ==length:
+                    break
+        return ans
+    
+#1. 如果窗口内有 a, b, c, 那么窗口继续向右拉开都满足
+#2. 如果窗口内没有 a, b, c, 那么 right 指针右移找到满足窗口内有 a,  b, c
+#3. 然后 left 指针右移，每次都要判断上面两种情况
+#https://wonzwang.blog.csdn.net/article/details/104455690
