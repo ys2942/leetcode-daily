@@ -1,0 +1,32 @@
+class Solution:
+    def numberOfSubarrays(self, nums: List[int], k: int) -> int:
+        nums=[n%2 for n in nums]
+        preSum=0
+        counts=0
+        sum_counts={0:1}
+        
+        for n in nums:
+            preSum+=n
+            counts+=sum_counts.get(preSum-k,0)
+            sum_counts[preSum]=sum_counts.get(preSum,0)+1
+        return counts
+    
+#很明显，这应该是一个双指针或者subarray的问题，
+#稍微转换下思路，如果将其中的奇数换成1，偶数换成0，
+#那么这个问题就活脱脱是一个 prefix sum subarray 的问题呀；
+#https://www.yuque.com/cnzero/algorithms/ggnpck
+
+class Solution:
+    def numberOfSubarrays(self, nums: List[int], k: int) -> int:
+        left,res,count_odd,c=0,0,0,0
+        N=len(nums)
+        for right in range(N):
+            if nums[right]%2:
+                count_odd+=1
+                c=0
+            while count_odd==k:
+                count_odd-=nums[left]%2
+                left+=1
+                c+=1
+            res+=c
+        return res
