@@ -1,0 +1,18 @@
+class Solution:
+    def findTheLongestSubstring(self, s: str) -> int:
+        state,dt,res=0,{0:-1},0
+        t='aeiou'
+        for i,c in enumerate(s):
+            j=t.find(c)
+            if j>=0:
+                state^=1<<j
+            if state not in dt:
+                dt[state]=i
+            res=max(res,i-dt[state])## 全部奇偶性都相同，相减一定都是偶数
+        return res
+#https://www.programiz.com/python-programming/methods/list/index
+#实际上由于我们只关心奇偶性，并不关心每一个元音字母具体出现的次数。因此我们可以使用`是奇数，是偶数`两个状态来表示，由于只有两个状态，我们考虑使用位运算。
+# ^	XOR	Sets each bit to 1 if only one of two bits is 1
+#如果对两个二进制做异或，会对其每一位进行位运算，如果相同则位 0，否则位 1。
+#- 如果两个数字奇偶性相同，那么其相减一定是偶数。
+#- 如果两个数字奇偶性不同，那么其相减一定是奇数
