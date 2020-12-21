@@ -1,0 +1,16 @@
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        if not s:
+            return 0
+        start,end=0,0
+        res,lookup=0,set()
+        while start<len(s) and end<len(s):
+            if s[end] not in lookup:
+                lookup.add(s[end])
+                res=max(res,end-start+1)
+                end+=1
+            else:
+                lookup.remove(s[start])
+                start+=1
+        return res
+   #https://www.cnblogs.com/ffjsls/p/11000381.html
