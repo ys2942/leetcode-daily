@@ -1,0 +1,21 @@
+class Solution:
+    def subarraysWithKDistinct(self, A: List[int], K: int) -> int:
+        n=len(A)
+        cnt=collections.defaultdict(int)
+        res,j=0,0
+        for i in range(n):
+            #j=max(j,i)
+            while j<n and len(cnt)<K:
+                cnt[A[j]]+=1
+                j+=1
+            if len(cnt)<K:
+                break
+            k=j
+            while k<n and A[k] in cnt:
+                k+=1
+            res+=k-j+1
+            cnt[A[i]]-=1
+            if cnt[A[i]] == 0:
+                del cnt[A[i]]
+        return res
+#https://blog.csdn.net/qq_17550379/article/details/87292206?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.add_param_isCf&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.add_param_isCf
