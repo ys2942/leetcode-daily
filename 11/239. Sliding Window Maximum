@@ -1,0 +1,33 @@
+class Solution:
+    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+        st,res=collections.deque([]),[]
+        for i,n in enumerate(nums):
+            if st and st[0]==i-k:
+                st.popleft()
+            while st and n>=nums[st[-1]]:
+                st.pop()
+            st.append(i)
+            if i>=k-1:
+                res.append(nums[st[0]])
+        return res
+        
+         
+         
+         
+class Solution:
+    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+        que=collections.deque()
+        res=[]
+        for i,num in enumerate(nums):
+            if que and i-que[0][0]>=k:
+                que.popleft()
+            while que and que[-1][1]<=num:
+                que.pop()
+            que.append([i,num])
+            if i >=k-1:
+                res.append(que[0][1])
+        return res   
+#设定一个大小为k的单调递减双向队列，时刻保持队列是单调递减的，即如果从最右边加入了一个较大的数字，需要从右开始退队列，退到队列中剩余的数字都比该数字大位置，此时队列是单调递减的。如果队列的大小达到了k，则应该把队列最前面的数字（其实是之前区间的最大值）删除掉。
+#时间复杂度是O(N).
+#https://blog.csdn.net/fuxuemingzhu/article/details/100828798?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.nonecase&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.nonecase
+
