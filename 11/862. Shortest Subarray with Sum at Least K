@@ -1,0 +1,23 @@
+class Solution:
+    def shortestSubarray(self, A: List[int], K: int) -> int:
+        N = len(A)
+        P = [0]
+        for x in A:
+            P.append(P[-1] + x)
+
+        #Want smallest y-x with Py - Px >= K
+        ans = N+1 # N+1 is impossible
+        monoq = collections.deque() #opt(y) candidates, represented as indices of P
+        for y, Py in enumerate(P):
+            #Want opt(y) = largest x with Px <= Py - K
+            while monoq and Py <= P[monoq[-1]]:
+                monoq.pop()
+
+            while monoq and Py - P[monoq[0]] >= K:
+                ans = min(ans, y - monoq.popleft())
+
+            monoq.append(y)
+
+        return ans if ans < N+1 else -1
+#第一，当出现负数的时候，该点一定不能作为子序列的起始点，因为不论当前的子序列的和是小于目标值还是大于目标值，该点都不能作为起始点。如果目前的和已经大于目标值，则该点后面的点一定符合条件（因为负数对和是有消极作用的），如果目前的数小于目标值，起始点要么是前面某个正数，要么是后面某个数值，所以，负数出现的点一定不能作为满足条件的子序列起始点。
+#第二点，若此时找到了满足情况的点，left(起点)，right(终点)，此时，如果我们需要更小的满足条件的其他序列，就不能在使用这个left作为起点，因为如果往后出现更短的满足条件的子序列，起点一定在该点之后
