@@ -1,0 +1,37 @@
+class Solution:
+    def maxResult(self, nums: List[int], k: int) -> int:
+        if not nums:
+            return 0
+        dp=[float('-inf')]*len(nums)
+        dp[0]=nums[0]
+        dq=collections.deque()
+        dq.append(0)
+        for i in range(1,len(nums)):
+            while dq and dq[0]<i-k:
+                dq.popleft()
+            dp[i]=nums[i]+dp[dq[0]]
+            while dq and dp[dq[-1]]<=dp[i]:
+                dq.pop()
+            dq.append(i)
+        return dp[-1]
+#仔细观察可以发现这边的步数k实际就像是一个窗口，从这个角度出发就可以结合sliding window maximum的解法，因为sliding window的解法，每个元素只会入队列一次和出队列一次，所以总体解法就是O(n)的。
+
+class Solution:
+    def maxResult(self, nums: List[int], k: int) -> int:
+        if not nums:
+            return 0
+        dp=[float('-inf')]*len(nums)
+        dp[0]=nums[0]
+        max_heap=[]
+        heapq.heappush(max_heap,(-nums[0],0))
+        for i in range(1,len(nums)):
+            while max_heap[0][1]<i-k:
+                heapq.heappop(max_heap)
+            dp[i]=nums[i]-max_heap[0][0]
+            heapq.heappush(max_heap,(-dp[i],i))
+        return dp[-1]
+#Heap data structure is mainly used to represent a priority queue. In Python, it is available using “heapq” module. The property of this data structure in Python is that each time the smallest of heap element is popped(min heap). Whenever elements are pushed or popped, heap structure in maintained. The heap[0] element also returns the smallest element each time.
+#A min heap is a binary tree in which the parent nodes hold smaller values than that of the children.  
+#As new elements get added into the heap, the “heap” property stated above is maintained.
+#The heapq module in Python provides a set of functions to create and manipulate min heaps.
+#The heappush() method pushes an element into an existing heap in such a way that the heap property is maintained.
