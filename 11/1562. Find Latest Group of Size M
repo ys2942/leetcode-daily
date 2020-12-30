@@ -1,0 +1,27 @@
+class Solution:
+    def findLatestStep(self, arr: List[int], m: int) -> int:
+        
+        res,i,N=-1,0,len(arr)
+        arr_step=[0]*N
+        for idx,x in enumerate(arr):
+            arr_step[x-1]=idx+1 #arr_step: ith 位置是value步翻转成1
+        dq=collections.deque()
+        for j in range(N):
+            while j-i+1>m:
+                i+=1
+            while dq and dq[0][0]<i:
+                dq.popleft()
+            while dq and dq[-1][1]<=arr_step[j]:
+                dq.pop()
+            dq.append((j,arr_step[j]))
+
+            left=arr_step[i-1] if i-1>=0 else N+1
+            right=arr_step[j+1] if j+1<N else N+1
+            
+            if (left>dq[0][1]) and(right>dq[0][1]) and j-i+1==m:
+                res=max(res,min(left,right)-1)
+            
+            #j+=1
+            
+        return res
+#https://www.youtube.com/watch?v=Tf9v-fNijac
