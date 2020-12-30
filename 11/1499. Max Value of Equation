@@ -1,0 +1,12 @@
+class Solution:
+    def findMaxValueOfEquation(self, points: List[List[int]], k: int) -> int:
+        st,res=collections.deque(),float('-inf')
+        for x,y in points:
+            while st and x-st[0][1]>k:
+                st.popleft()
+            if st:
+                res=max(res,st[0][0]+x+y)
+            while st and y-x>=st[-1][0]:
+                st.pop()
+            st.append(((y-x),x))
+        return res
