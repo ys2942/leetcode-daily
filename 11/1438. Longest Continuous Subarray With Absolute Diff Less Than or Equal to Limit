@@ -1,0 +1,22 @@
+class Solution:
+    def longestSubarray(self, nums: List[int], limit: int) -> int:
+        i,res=0,0
+        min_dq,max_dq=collections.deque(),collections.deque()
+        for j in range(len(nums)):
+            while min_dq and nums[min_dq[-1]]>nums[j]:
+                min_dq.pop()
+            while max_dq and nums[max_dq[-1]]<nums[j]:
+                max_dq.pop()
+            min_dq.append(j)
+            max_dq.append(j)
+            while max_dq and min_dq and nums[max_dq[0]]-nums[min_dq[0]]>limit:
+                i+=1
+                while max_dq[0]<i:
+                    max_dq.popleft()
+                while min_dq[0]<i:
+                    min_dq.popleft()
+            res=max(res,j-i+1)
+        
+        return res
+#题意：给出一个数组，求连续子串的最大长度，所求的子串要求满足 |max_element - min_element| < limit
+#思路：用两个双向队列来模拟，max_deque用来存储当前所在位置之前元素的最大值，min_deque用来存储当前所在位置之前所有元素的最小值。用两个指针leftPointer和rightPointer来寻找最长的subArray，通过对rightPointer向后迭代，更新max_deque 和 min_deque，同时通过shrink leftPointer来使subArray满足题目要求。
