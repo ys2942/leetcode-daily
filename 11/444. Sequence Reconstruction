@@ -1,0 +1,26 @@
+class Solution:
+    def sequenceReconstruction(self, org: List[int], seqs: List[List[int]]) -> bool:
+        graph=collections.defaultdict(list)
+        indegree=collections.defaultdict(int)
+        for seq in seqs:
+            if len(seq)==1:
+                indegree[seq[0]]
+                graph[seq[0]]
+            for j in range(len(seq)-1):
+                graph[seq[j]].append(seq[j+1])
+                indegree[seq[j+1]]+=1
+        dq=collections.deque([i for i in graph.keys() if indegree[i]==0])
+        if set(org)!=set(indegree) or len(dq)==0:
+            return False
+        res=[]
+        while dq:
+            if len(dq)>1:
+                return False
+            i=dq.popleft()
+            res.append(i)
+            for node in graph[i]:
+                indegree[node]-=1
+                if indegree[node]==0:
+                    dq.append(node)
+        return (not sum(indegree.values()) and res==org)
+        
