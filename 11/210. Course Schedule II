@@ -1,0 +1,22 @@
+class Solution:
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        graph=collections.defaultdict(list)
+        indegrees=collections.defaultdict(int)
+        for u,v in prerequisites:
+            graph[v].append(u)
+            indegrees[u]+=1
+        path=[]
+        for i in range(numCourses):
+            zeroDegree=False
+            for j in range(numCourses):
+                if indegrees[j]==0:
+                    zeroDegree=True
+                    break
+            if not zeroDegree:
+                return []
+            indegrees[j]=-1
+            path.append(j)
+            for node in graph[j]:
+                indegrees[node]-=1
+        return path
+#https://blog.csdn.net/fuxuemingzhu/article/details/83302328
