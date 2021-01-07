@@ -1,0 +1,19 @@
+class Solution:
+    def checkIfPrerequisite(self, n: int, prerequisites: List[List[int]], queries: List[List[int]]) -> List[bool]:
+        graph=collections.defaultdict(list)
+        indegrees=collections.defaultdict(int)
+        preset=collections.defaultdict(set)
+        for x,y in prerequisites:
+            graph[x].append(y)
+            preset[y].add(x)
+            indegrees[y]+=1
+        queue=deque([i for i in range(n) if indegrees[i]==0])
+        while queue:
+            curr=queue.popleft()
+            for node in graph[curr]:
+                preset[node]|=preset[curr]
+                indegrees[node]-=1
+                if indegrees[node]==0:
+                    queue.append(node)
+        res=[x in preset[y] for x,y in queries]
+        return res
