@@ -1,0 +1,44 @@
+class Solution:
+    def sortItems(self, n: int, m: int, group: List[int], beforeItems: List[List[int]]) -> List[int]:
+        group_graph=collections.defaultdict(list)
+        item_graph = defaultdict(list)
+        group_indegree = defaultdict(int)
+        item_indegree = defaultdict(int)
+
+        for u in range(n):
+            if group[u] == -1:
+                group[u] = m
+                m += 1
+
+        for v in range(n):
+            for u in beforeItems[v]:
+                if group[u] != group[v]:
+                    group_graph[group[u]].append(group[v])
+                    group_indegree[group[v]] += 1
+                item_graph[u].append(v)
+                item_indegree[v] += 1
+
+        group_order = self.bfs(group_graph, group_indegree, m)
+        item_order = self.bfs(item_graph, item_indegree, n)
+        if not group_order or not item_order: return []
+
+        groups = defaultdict(list)
+        for item in item_order:
+            groups[group[item]].append(item)
+
+        res = []
+        for g in group_order:
+            res.extend(groups[g])
+        return res
+
+    def bfs(self, graph, indegree, n):
+        nodes = [i for i in range(n) if indegree[i] == 0]
+        dq, order = deque(nodes), []
+        while dq:
+            u = dq.popleft()
+            order.append(u)
+            for v in graph[u]:
+                indegree[v] -= 1
+                if indegree[v] == 0:
+                    dq.append(v)
+        return order if len(order) == n else []
