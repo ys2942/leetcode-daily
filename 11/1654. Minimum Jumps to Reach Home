@@ -1,0 +1,17 @@
+class Solution:
+    def minimumJumps(self, forbidden: List[int], a: int, b: int, x: int) -> int:
+        forbidden=set(forbidden)
+        Q=collections.deque()
+        Q.append((0,0,False))
+        while Q:
+            cur,cnt,used=Q.popleft()
+            if cur==x:
+                return cnt
+            if cur+a<6000 and cur+a not in forbidden:
+                forbidden.add(cur+a)
+                Q.append((cur+a,cnt+1,False))
+            if not used and cur-b>0 and cur-b not in forbidden:
+                Q.append((cur-b,cnt+1,True))
+        return -1
+#https://blog.csdn.net/w5688414/article/details/110277961
+#https://blog.csdn.net/qq_39445165/article/details/109840312
