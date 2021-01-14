@@ -1,0 +1,18 @@
+class Solution:
+    def canReach(self, arr: List[int], start: int) -> bool:
+        q=collections.deque()
+        q.append(start)
+        visited=set()
+        while q:
+            index=q.popleft()
+            visited.add(index)
+            if arr[index]==0:
+                return True
+            pos1=index+arr[index]
+            if pos1 not in visited and pos1<len(arr):
+                q.append(pos1)
+            pos2=index-arr[index]
+            if pos2 not in visited and pos2>=0:
+                q.append(pos2)
+        return False
+#https://leetcode.com/problems/jump-game-iii/discuss/981277/Python-Iterative-BFS-and-DFS
