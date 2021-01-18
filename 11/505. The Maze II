@@ -1,0 +1,29 @@
+class Solution:
+    def shortestDistance(self, maze: List[List[int]], start: List[int], destination: List[int]) -> int:
+        queue=collections.deque()
+        queue.append(start)
+        m,n=len(maze),len(maze[0])
+        dirs=[(0,1),(0,-1),(-1,0),(1,0)]
+        dist=[[float('inf')]*n for _ in range(m)]
+        dist[start[0]][start[1]]=0
+        while queue:
+            i,j=queue.popleft()
+            for x,y in dirs:
+                row,col=i,j
+                steps=0
+                while 0<=row<m and 0<=col<n and maze[row][col]==0:
+                    row+=x
+                    col+=y
+                    steps+=1
+                row-=x
+                col-=y
+                steps-=1
+                update_dist=dist[i][j]+steps
+                if dist[row][col]>update_dist:
+                    dist[row][col]=update_dist
+                    queue.append((row,col))
+        if dist[destination[0]][destination[1]]!=float('inf'):
+            return dist[destination[0]][destination[1]]
+        else:
+            return -1
+            #https://leetcode.com/problems/the-maze-ii/discuss/817301/Python-BFSDFS-solution
