@@ -1,0 +1,25 @@
+class Solution:
+    def trapRainWater(self, heightMap: List[List[int]]) -> int:
+        if not heightMap:
+            return 0        
+        m = len(heightMap)
+        n = len(heightMap[0])        
+        volume = 0       
+        visited = [[False] * n for _ in range(m)]      
+        min_heap = []        
+        directions = [(0, 1),(0, -1),(1, 0),(-1, 0)]        
+        for i in range(m):
+            for j in range(n):               
+                if i == 0 or i == m - 1 or j == 0 or j == n - 1:
+                    heapq.heappush(min_heap, (heightMap[i][j], i, j))
+                    visited[i][j] = True      
+        while min_heap:           
+            value, i, j = heapq.heappop(min_heap)            
+            for dx, dy in directions:              
+                r , c = i + dx, j + dy                
+                if 0 <= r < m  and 0 <= c < n and not visited[r][c]:
+                    volume += max(0, value - heightMap[r][c])
+                    visited[r][c] = True
+                    heapq.heappush(min_heap, (max(value, heightMap[r][c]), r, c))
+                    
+        return volume
