@@ -1,0 +1,26 @@
+class Solution:
+    def minFlips(self, mat: List[List[int]]) -> int:
+        def flip(enc,r,c):
+            for dx,dy in [(0,0),(-1,0),(0,1),(1,0),(0,-1)]:
+                nr,nc=r+dx,c+dy
+                if 0<= nr <m and 0<=nc<n :
+                    enc^=(1<<(nr*n+nc))                    
+            return enc
+        
+        m,n=len(mat),len(mat[0])
+        start=0
+        for i in range(m):
+            for j in range(n):
+                start|=(mat[i][j]<<(i*n+j))
+        q,seen=collections.deque([(start,0)]),set([start])
+        while q:
+            num,steps=q.popleft()
+            if num==0:
+                return steps
+            for i in range(m):
+                for j in range(n):
+                    nxt=flip(num,i,j)
+                    if nxt not in seen:
+                        seen.add(nxt)
+                        q.append((nxt,steps+1))
+        return -1
