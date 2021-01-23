@@ -1,0 +1,23 @@
+class Solution:
+    def findShortestWay(self, maze: List[List[int]], ball: List[int], hole: List[int]) -> str:
+        dt=dict(zip(range(4),'dlru'))
+        dq=[(0,'',ball[0],ball[1])]
+        seen=set()
+        m,n=len(maze),len(maze[0])
+        while dq:
+            d,move,x,y=heapq.heappop(dq)
+            if [x,y]==hole:
+                return move
+            if (x,y) not in seen:
+                seen.add((x,y))
+                for i, (dx,dy) in enumerate([(1,0),(0,-1),(0,1),(-1,0)]):
+                    nx,ny,nd=x,y,d
+                    while 0<=nx+dx<m and 0<=ny+dy<n and maze[nx+dx][ny+dy]==0:
+                        nd+=1
+                        nx+=dx
+                        ny+=dy
+                        if [nx,ny]==hole:
+                            break
+                    heapq.heappush(dq,(nd,move+dt[i],nx,ny))
+        return 'impossible'
+        
