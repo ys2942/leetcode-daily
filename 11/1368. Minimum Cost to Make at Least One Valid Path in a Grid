@@ -1,0 +1,22 @@
+class Solution:
+    def minCost(self, grid: List[List[int]]) -> int:
+        m,n=len(grid),len(grid[0])
+        hq=[(0,0,0)]
+        seen={(0,0):0}
+        while hq:
+            cost,x,y=heapq.heappop(hq)
+            if (x,y)==(m-1,n-1):
+                return cost
+            for dx,dy,sign in [(0,-1,2),(0,1,1),(1,0,3),(-1,0,4)]:
+                nx,ny=x+dx,y+dy
+                if 0<=nx<m and 0<=ny<n:
+                    if sign==grid[x][y]:
+                        nc=cost
+                    else:
+                        nc=cost+1
+                    if (nx,ny) not in seen or seen[(nx,ny)]>nc:
+                        seen[(nx,ny)]=nc
+                        heapq.heappush(hq,(nc,nx,ny))
+        return -1
+            
+        
