@@ -1,0 +1,27 @@
+class Solution:
+    def snakesAndLadders(self, board: List[List[int]]) -> int:
+        N=len(board)
+        arr=[0]
+        for x in reversed(board):
+            if (len(arr)-1)//N%2==1:
+                x.reverse()
+            arr+=x
+        
+        dq=collections.deque([(1,0)])
+        visited={1}
+        dst=len(arr)-1
+        
+        while dq:
+            idx,step=dq.popleft()
+            if idx==dst:
+                return step
+            for nxt in range(idx+1,idx+7):
+                if nxt>dst:
+                    continue
+                if arr[nxt]!=-1:
+                    nxt=arr[nxt]
+                if nxt not in visited:
+                    dq.append((nxt,step+1))
+                    visited.add(nxt)
+        return -1
+    
