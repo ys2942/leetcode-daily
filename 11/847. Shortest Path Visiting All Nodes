@@ -1,0 +1,24 @@
+class Solution:
+    def shortestPathLength(self, graph: List[List[int]]) -> int:
+        N = len(graph)
+        que = collections.deque()
+        step = 0
+        goal = (1 << N) - 1
+        visited = [[0 for j in range(1<<N)] for i in range(N)]
+        for i in range(N):
+            que.append((i, 1 << i))
+        while que:
+            s = len(que)
+            for i in range(s):
+                node, state = que.popleft()
+                if state == goal:
+                    return step
+                if visited[node][state]:
+                    continue
+                visited[node][state] = 1
+                for nextNode in graph[node]:
+                    que.append((nextNode, state | (1 << nextNode)))
+            step += 1
+        return step
+#需要找出某顶点到其他顶点的最短路径。出发顶点不是确定的，每个顶点有可能访问多次。使用N位bit代表访问过的顶点的状态。如果到达了最终状态，那么现在步数就是所求。这个题把所有的节点都放入了起始队列中，相当于每次都是所有的顶点向前走一步。
+#https://blog.csdn.net/fuxuemingzhu/article/details/82939203
