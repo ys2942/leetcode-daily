@@ -1,0 +1,32 @@
+class Solution:
+    def pacificAtlantic(self, matrix: List[List[int]]) -> List[List[int]]:
+        if not matrix or not matrix[0]:
+            return []
+        m,n =len(matrix),len(matrix[0])
+        pq,aq=collections.deque(),collections.deque()
+        pseen,aseen=set(),set()
+        
+        for i in range(m):
+            pq.append((i,0))
+            aq.append((i,n-1))
+            pseen.add((i,0))
+            aseen.add((i,n-1))
+        for i in range(n):
+            pq.append((0,i))
+            aq.append((m-1,i))
+            pseen.add((0,i))
+            aseen.add((m-1,i))
+            
+        return self.bfs(pq,pseen,matrix,m,n) & self.bfs(aq,aseen,matrix,m,n)
+    
+    def bfs(self,q,seen,matrix,m,n):
+        
+        while q:
+            x,y=q.popleft()
+        
+            for dx,dy in [(0,1),(0,-1),(1,0),(-1,0)]:
+                nx,ny=x+dx,y+dy
+                if 0<=nx<m and 0<=ny<n and matrix[nx][ny]>=matrix[x][y] and (nx,ny) not in seen:
+                    q.append((nx,ny))
+                    seen.add((nx,ny))
+        return seen
