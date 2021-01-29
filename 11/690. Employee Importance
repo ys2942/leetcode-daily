@@ -1,0 +1,26 @@
+"""
+# Definition for Employee.
+class Employee:
+    def __init__(self, id: int, importance: int, subordinates: List[int]):
+        self.id = id
+        self.importance = importance
+        self.subordinates = subordinates
+"""
+
+class Solution:
+    def getImportance(self, employees: List['Employee'], id: int) -> int:
+
+        emap={}
+        for e in employees:
+            emap[e.id]=e
+        q=collections.deque()
+        q.append(id)
+        #emap={e.id:e for e in employees}
+        #q=collections.deque([id])
+        ans=0
+        while q:
+            eid=q.popleft()
+            ans+=emap[eid].importance
+            for s in emap[eid].subordinates:
+                q.append(s)
+        return ans
