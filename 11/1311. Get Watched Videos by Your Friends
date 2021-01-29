@@ -1,0 +1,14 @@
+class Solution:
+    def watchedVideosByFriends(self, watchedVideos: List[List[str]], friends: List[List[int]], id: int, level: int) -> List[str]:
+        q,seen=[id],{id}
+        for _ in range(level):
+            n=len(q)
+            for _ in range(n):
+                idx=q.pop(0)
+                for i in friends[idx]:
+                    if i not in seen:
+                        seen.add(i)
+                        q.append(i)
+        cnt=collections.Counter([c for idx in q for c in watchedVideos[idx]])
+        return sorted(cnt,key=lambda x:(cnt[x],x))
+#https://blog.csdn.net/qq_17550379/article/details/103846825?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_title-2&spm=1001.2101.3001.4242
