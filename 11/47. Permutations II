@@ -1,0 +1,18 @@
+class Solution:
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+                   
+        if len(nums)<=1:
+            return [nums]
+        
+        answer=[]
+        for i,num in enumerate(nums):
+
+            n=nums[:i]+nums[i+1:]
+            for j in self.permuteUnique(n):
+                answer.append([nums[i]]+j)
+        
+        answer1=[]
+        for j in answer:
+            if j not in answer1:
+                answer1.append(j)
+        return answer1
