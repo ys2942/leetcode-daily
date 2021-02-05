@@ -1,0 +1,37 @@
+class Solution:
+    def letterCombinations(self, digits: str) -> List[str]:
+        if not digits:
+            return []
+        dt={'2':'abc','3':'def','4':'ghi','5':'jkl','6':'mno','7':'pqrs','8':'tuv','9':'wxyz'}
+        res=[]
+        self.bt(dt,digits,0,'',res)
+        return res
+        
+    def bt(self,dt, digits,i,path,res):
+        if i==len(digits):
+            res.append(path)
+            return
+        for let in dt[digits[i]]:
+            self.bt(dt,digits,i+1,path+let,res)
+           
+           
+           
+ class Solution:
+    def letterCombinations(self, digits: str) -> List[str]:
+        if not digits:
+            return []
+        self.dict={'2':'abc','3':'def','4':'ghi','5':'jkl','6':'mno','7':'pqrs','8':'tuv','9':'wxyz'}
+        self.res=[]
+        
+        def dfs(digits,index,temp):
+            if len(temp)==len(digits):
+                self.res.append(''.join(x for x in temp))
+                return
+            for char in self.dict[digits[index]]:
+                temp.append(char)
+                dfs(digits,index+1,temp)
+                temp.pop()
+        dfs(digits,0,[])
+        return self.res
+#https://www.youtube.com/watch?v=7KZWLM9QtRA
+
