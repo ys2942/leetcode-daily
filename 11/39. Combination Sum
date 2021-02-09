@@ -1,0 +1,17 @@
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        
+        arr=[]
+        def r_sum(candidates, target, index, sub_list):
+            if target == 0:
+                arr.append(sub_list[:])
+                return
+            if target <0:
+                return
+            for i in range(index, len(candidates)):
+                sub_list.append(candidates[i])
+                r_sum(candidates, target-candidates[i], i, sub_list)
+                sub_list.pop()
+                
+        r_sum(candidates, target, 0, [])
+        return arr
