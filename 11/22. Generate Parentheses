@@ -1,0 +1,19 @@
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        res=[]
+        def dfs(res,string,n,l,r):
+            if l==n:
+                for i in range(r,n):
+                    string+=')'
+                res.append(string)
+                return
+            elif l==0 or l==r:
+                string+='('
+                dfs(res,string,n,l+1,r)
+            else:
+                dfs(res,string+')',n,l,r+1)
+                dfs(res,string+'(',n,l+1,r)
+        dfs(res,'',n,0,0)
+        return res
+#https://blog.csdn.net/L141210113/article/details/88072703
+        
