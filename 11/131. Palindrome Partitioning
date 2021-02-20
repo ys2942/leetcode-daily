@@ -1,0 +1,19 @@
+class Solution:
+    def partition(self, s: str) -> List[List[str]]:
+        self.isPalindrom=lambda s:s==s[::-1]
+        res=[]
+        self.helper(s,res,[])
+        return res
+    def helper(self,s,res,path):
+        if not s:
+            res.append(path)
+            return
+        for i in range(1,len(s)+1):
+            if self.isPalindrom(s[:i]):
+                self.helper(s[i:],res,path+[s[:i]])
+                print (path+[s[:i]])
+#https://blog.csdn.net/fuxuemingzhu/article/details/79574462
+#https://www.geeksforgeeks.org/append-extend-python/
+#if not s表示遍历完字符串而且path中的字符串都是回文的。（因为不是回文的就不会进入到dfs递归当中）
+#还有记得return
+#注意path是list，在加字符串的时候需要转为list。
