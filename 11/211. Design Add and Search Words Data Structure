@@ -1,0 +1,43 @@
+class TrieNode(object):
+    def __init__(self):
+        self.children=collections.defaultdict(TrieNode)
+        self.is_word=False
+
+class WordDictionary:
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.root=TrieNode()
+        
+
+    def addWord(self, word: str) -> None:
+        current=self.root
+        for letter in word:
+            current=current.children[letter]
+        current.is_word=True
+        
+
+    def search(self, word: str) -> bool:
+        return self.searchFrom(self.root,word)
+    
+    def searchFrom(self,root,word):
+        for i in range(len(word)):
+            letter=word[i]
+            if letter=='.':
+                for child in root.children:
+                    if self.searchFrom(root.children[child],word[i+1:]):
+                        return True
+                return False
+            elif letter not in root.children:
+                return False
+            else:
+                root=root.children[letter]
+        return root.is_word
+#https://blog.csdn.net/qq_21275321/article/details/84350057?utm_medium=distribute.pc_relevant.none-task-blog-OPENSEARCH-18.control&dist_request_id=da8fdfde-2b52-417b-ab4f-939327968e47&depth_1-utm_source=distribute.pc_relevant.none-task-blog-OPENSEARCH-18.control
+
+# Your WordDictionary object will be instantiated and called as such:
+# obj = WordDictionary()
+# obj.addWord(word)
+# param_2 = obj.search(word)
