@@ -1,0 +1,41 @@
+from collections import defaultdict
+
+class TrieNode:
+    def __init__(self):
+        self.children=defaultdict(TrieNode)
+        self.ind=-1
+
+class WordFilter:
+
+    def __init__(self, words: List[str]):
+        self.root=TrieNode()
+        for ind,word in enumerate(words):
+            self.generateWord(word,ind)
+            
+    def generateWord(self,word,ind):
+        n=len(word)
+        r=word[::-1]
+        for i in range(n+1):
+            w=r[:i][::-1]+'#'+word
+            self.insertWord(w,ind)
+    
+    def insertWord(self,word,ind):
+        node=self.root
+        for x in word:
+            node=node.children[x]
+            node.ind=ind
+        
+    def f(self, prefix: str, suffix: str) -> int:
+        word=suffix+'#'+prefix
+        node=self.root
+        for x in word:
+            if x not in node.children:
+                return -1
+            node=node.children[x]
+        return node.ind
+        
+
+
+# Your WordFilter object will be instantiated and called as such:
+# obj = WordFilter(words)
+# param_1 = obj.f(prefix,suffix)
