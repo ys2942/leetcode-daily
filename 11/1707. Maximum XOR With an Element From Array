@@ -1,0 +1,41 @@
+from collections import defaultdict
+class Solution:
+    def maximizeXor(self, nums: List[int], queries: List[List[int]]) -> List[int]:
+        trie=defaultdict(dict)
+        nums.sort()
+        queries=[query+[i] for i,query in enumerate(queries)]
+        queries.sort(key=lambda x:x[1])
+        curr=0
+        
+        def add_to_trie(nums):
+            for num in nums:
+                curr=trie
+                for i in range(31,-1,-1):
+                    bit=int(num&(1<<i)!=0)
+                    if bit not in curr:
+                        curr[bit]={}
+                    curr=curr[bit]
+                curr[-1]=num
+                
+        def search_trie(x):
+            curr=trie
+            for i in range(31,-1,-1):
+                bit=int(x&(1<<i)==0)
+                if bit not in curr:
+                    curr=curr[not(bit)]
+                else:
+                    curr=curr[bit]
+            return curr[-1]^x
+
+        out=[-1]*len(queries)
+        for query in queries:
+            x,y,o_ind=query
+            ind=bisect.bisect_right(nums,y)
+            add_to_trie(nums[curr:ind])
+            if ind!=0:
+                curr_ans=search_trie(x)
+            else:
+                curr_ans=-1
+            out[o_ind]=curr_ans
+            curr=ind
+        return out
