@@ -1,0 +1,17 @@
+class Solution:
+    def palindromePairs(self, words: List[str]) -> List[List[int]]:
+        suffixes=dict()
+        for i, word in enumerate(words):
+            suffixes[word[::-1]]=i
+        res=[]
+        for i,word in enumerate(words):
+            if word in suffixes and suffixes[word]!=i:
+                res.append((i,suffixes[word]))
+            for j in range(len(word)+1):
+                if word[:j]==word[:j][::-1] and word[j:] in suffixes:
+                    if suffixes[word[j:]]!=i:
+                        res.append((suffixes[word[j:]],i))
+                if word[j:]==word[j:][::-1] and word[:j] in suffixes:
+                    if i!=suffixes[word[:j]]:
+                        res.append((i,suffixes[word[:j]]))
+        return list(set(res))
