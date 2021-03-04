@@ -1,0 +1,66 @@
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+        self.parent = None
+"""
+
+class Solution:
+    def lowestCommonAncestor(self, p: 'Node', q: 'Node') -> 'Node':
+        p_list,q_list=[],[]
+        while p:
+            p_list.append(p)
+            p=p.parent
+        while q:
+            q_list.append(q)
+            q=q.parent
+        if len(p_list)>len(q_list):
+            longer_list=p_list
+            ancestors=set(q_list)
+        else:
+            longer_list=q_list
+            ancestors=set(p_list)
+        for node in longer_list:
+            if node in ancestors:
+                return node
+         
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+        self.parent = None
+"""
+
+class Solution:
+    def lowestCommonAncestor(self, p: 'Node', q: 'Node') -> 'Node':
+        if p.parent is None:
+            return p       
+        if q.parent is None:
+            return q        
+        p_parents, q_parents = [p], [q]
+        x, y = p, q
+        p_parent, q_parent = x.parent, y.parent
+        while p_parent is not None or q_parent is not None:
+            if p_parent == q_parent:
+                return p_parent
+            if p_parent in q_parents:
+                return p_parent
+            if q_parent in p_parents:
+                return q_parent
+            p_parents.append(p_parent)
+            q_parents.append(q_parent)
+            x, y = x.parent, y.parent
+            if x is not None:
+                p_parent = x.parent
+            else:
+                p_parent = None                
+            if y is not None:
+                q_parent = y.parent
+            else:
+                q_parent = None
