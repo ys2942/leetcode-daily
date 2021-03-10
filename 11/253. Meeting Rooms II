@@ -1,0 +1,13 @@
+class Solution:
+    def minMeetingRooms(self, intervals: List[List[int]]) -> int:
+        intervals.sort(key=lambda x:x[0])
+        heap=[]
+        for i in intervals:
+            if heap and i[0]>=heap[0]:
+                heapq.heapreplace(heap,i[1])
+            else:
+                heapq.heappush(heap,i[1])
+        return len(heap)
+#最小堆算法. 利用heap[0]永远是队列中最小值这一性质, 我们构建一个heap队列, 遍历intervals, 如果当前的intervals的开始时间在heap[0]之后, 那么两个会议可以用同一个房间, 我们将当前会议的结束时间来替代heap[0]; 否则需要另外开一个房间, 将会议的结束时间加到heap队列里, 最后返回heap的长度.
+#https://blog.csdn.net/danspace1/article/details/86640093
+#https://www.geeksforgeeks.org/heap-queue-or-heapq-in-python/
