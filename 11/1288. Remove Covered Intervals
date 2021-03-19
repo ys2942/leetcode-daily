@@ -1,0 +1,9 @@
+class Solution:
+    def removeCoveredIntervals(self, intervals: List[List[int]]) -> int:
+        intervals = sorted(intervals, key = lambda x: (x[0],-x[1]))
+        stack = [intervals[0]]
+        for i in range(1, len(intervals)):
+            if intervals[i][1] >stack[-1][1]:
+                stack.append(intervals[i])
+        return len(stack)
+#我们只需要将intervals按照左边界从小到大和右边界从大到小排序。接着遍历所有区间，判断当前区间的右边界是不是比之前区间的右边界小，如果比之前的小，说明之前的区间覆盖了当前区间（因为排序方式导致之前区间的左边界一定小于当前区间的左边界），我们就可以将当前的区间去除。
