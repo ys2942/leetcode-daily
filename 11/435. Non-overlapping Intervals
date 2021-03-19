@@ -1,0 +1,12 @@
+class Solution:
+    def eraseOverlapIntervals(self, intervals: List[List[int]]) -> int:
+        end=float('-inf')
+        count=0
+        intervals.sort(key=lambda x:x[1])
+        for interval in intervals:
+            if interval[0]>=end:
+                end=interval[1]
+            else:
+                count+=1
+        return count
+#先对所有区间的起点进行排序，然后进行遍历，如果新的区间起点比老的区间终点小的话，说明有重叠，需要移除区间，移除哪个区间呢？当然是终点最靠后的终点。
