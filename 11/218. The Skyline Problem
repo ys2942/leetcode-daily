@@ -1,0 +1,19 @@
+class Solution:
+    def getSkyline(self, buildings: List[List[int]]) -> List[List[int]]:
+        borders = sorted([i[0] for i in buildings] + [i[1] for i in buildings])
+        #print (borders) [2, 3, 5, 7, 9, 12, 15, 19, 20, 24]
+        index=0
+        heap=[]
+        res=[[0,0]]
+        for border in borders:
+            while index<len(buildings) and buildings[index][0]==border:#priority queue,第一个数值为最小值，所以要加﹣号，找到最高点
+                heapq.heappush(heap,[-buildings[index][2],buildings[index][1]])
+                index+=1
+            while heap and heap[0][1]<=border:
+                heapq.heappop(heap)
+            heigh=-heap[0][0] if heap else 0
+            if heigh!=res[-1][-1]:
+                res.append([border,heigh])
+        return res[1:]
+#https://suixinblog.cn/2019/06/leetcode-the-skyline-problem.html
+#https://www.youtube.com/watch?v=v5CMa5MUGCo
