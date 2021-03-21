@@ -1,0 +1,16 @@
+class Solution:
+    def isRectangleCover(self, rectangles: List[List[int]]) -> bool:
+        x_min = y_min = float("inf")
+        x_max = y_max = float("-inf")
+        corners = set()
+        area = 0
+        for x1, y1, x2, y2 in rectangles:
+            corners ^= {(x1, y1), (x1, y2), (x2, y1), (x2, y2)}
+            x_min = min(x1, x_min)
+            y_min = min(y1, y_min)
+            x_max = max(x2, x_max)
+            y_max = max(y2, y_max)
+            area += (x2 - x1) * (y2 - y1)
+        if {(x_min, y_min), (x_min, y_max), (x_max, y_min), (x_max, y_max)} != corners:
+            return False
+        return area == (x_max - x_min) * (y_max - y_min)
