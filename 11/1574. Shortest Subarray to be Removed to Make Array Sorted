@@ -1,0 +1,20 @@
+class Solution:
+    def findLengthOfShortestSubarray(self, arr: List[int]) -> int:
+        j = len(arr)-1
+        while j and arr[j-1] <= arr[j]:
+            j-=1
+            
+        i = 0
+        res = j-i
+        if res == 0:
+            return 0
+        while j <= len(arr):
+            while (i == 0 or arr[i-1] <= arr[i]) and (j == len(arr) or arr[i] <= arr[j]):
+                i += 1
+                res = min(res, j-i)
+                if res == 0:
+                    return 0
+            j += 1
+                
+        return res  
+#https://leetcode.com/problems/shortest-subarray-to-be-removed-to-make-array-sorted/discuss/973035/Python-sliding-window
