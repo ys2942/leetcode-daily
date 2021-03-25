@@ -1,0 +1,18 @@
+class Solution:
+    def balancedString(self, s: str) -> int:
+        d=Counter(s)
+        target=len(s)//4
+        res=len(s)
+        i=0
+        for j,c in enumerate(s):
+            d[c]-=1
+            while i<len(s) and d['Q']<=target and d['W']<=target and d['E']<=target and d['R']<=target:
+                res=min(res,j-i+1)
+                d[s[i]]+=1
+                i+=1
+        return res
+#思路：sliding window，关键是怎么判断什么时候移动2个pointer
+#1. 不要关注window内，转而关注window外
+#2. window外的count只要没有QWER的count超过len//4就是OK的
+#https://blog.csdn.net/qq_17550379/article/details/102657558?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_title-5&spm=1001.2101.3001.4242
+#此时我们可以统计窗口之外的所有字符出现次数k，我们需要计算它和len(s)//4大小关系。如果字符串出现次数都满足k <= len(s)//4，那么满足条件（因为如果k>len(s)//4的话，那么此时这个字符必然需要减少才能达到平衡，而减少的手段只能变成其他字符，而只有窗口中的字符才可以变化，所以。。。），返回true；否则，继续判断下一个窗口位置是不是满足条件（窗口向右滑动）。
