@@ -1,0 +1,23 @@
+class Solution:
+    def maxSum(self, nums1: List[int], nums2: List[int]) -> int:
+        M,N,dp1,dp2,i,j,MOD=len(nums1),len(nums2),0,0,0,0,10**9+7
+        while i<M and j<N:
+            if nums1[i]<nums2[j]:
+                dp1+=nums1[i]
+                i+=1
+            elif nums1[i]>nums2[j]:
+                dp2+=nums2[j]
+                j+=1
+            else:
+                mx=max(dp1,dp2)+nums1[i]
+                dp1,dp2=mx,mx
+                i+=1
+                j+=1
+        while i<M:
+            dp1+=nums1[i]
+            i+=1
+        while j<N:
+            dp2+=nums2[j]
+            j+=1
+        return max(dp1,dp2)%MOD
+        #https://zhuanlan.zhihu.com/p/166133283
