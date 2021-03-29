@@ -1,0 +1,21 @@
+class Solution:
+    def maximumScore(self, nums: List[int], k: int) -> int:
+        
+        l,r,res=0,len(nums)-1,0
+        nums=sorted([(v,i) for i,v in enumerate(nums)])
+        for v, i in nums:
+            if i<l or i>r:
+                continue
+            res=max(res,v*(r-l+1))
+            if i<k:
+                l=i+1
+            elif i>k:
+                r=i-1
+            else:
+                return res
+#https://blog.csdn.net/ptlovepr/article/details/114891723
+#我们想要得到最大的分数则目的是让区间尽可能大的同时区间内的最小值也大
+
+#初始化： 最开始将窗口放为整个数组，分数为 数组中最小的数*数组总长度
+#更新窗口： 可以将整个数组排序然后按照从小到大的顺序根据最小值更新窗口 -> 计算每次的分数 -> 最终得到最大分数
+#更新规则： 根据最小值的位置i和k位置的对比可以省去很多没有必要的计算：（若最小值的位置不在当前窗口中也不需要考虑了）
