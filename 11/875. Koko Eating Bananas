@@ -1,0 +1,15 @@
+class Solution:
+    def minEatingSpeed(self, piles: List[int], h: int) -> int:
+        l,r=1,max(piles)
+        while l<r:
+            k=l+(r-l)//2
+            curH=0
+            for p in piles:
+                curH+=p//k+(1 if p%k else 0)
+            if curH>h:
+                l=k+1
+            else:
+                r=k
+        return l
+#这个速度的范围一定在1和max(piles)之间，如果大于max(piles)肯定不是最慢速度。然后我们使用二分，计算在某个速度之下吃完的时间是否满足时间H。如果时间比H大，说明她吃的太快了，应该降低速度；反之应该加快速度
+#https://blog.csdn.net/isabloomingtree/article/details/113893945?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_title-1&spm=1001.2101.3001.4242
