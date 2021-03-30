@@ -1,0 +1,27 @@
+class Solution:
+    def splitArray(self, nums: List[int], m: int) -> int:
+        left=max(nums)
+        right=sum(nums)
+        while left<right:
+            mid=left+(right-left)//2
+            if self.canSplit(nums,m,mid):
+                right=mid
+            else:
+                left=mid+1
+        return left
+    
+    def canSplit(self,nums,m,mid):
+        cnt=1
+        curSum=0
+        for i in range(len(nums)):
+            curSum+=nums[i]
+            if curSum>mid:
+                curSum=nums[i]
+                cnt+=1
+                if cnt>m:
+                    return False
+        return True
+
+#题目：分割数组的最大值。给定一个均为非负元素的数组nums和数m，将nums划分为m个子序列，使得这m个子序列的和的最大值在所有可能的切分方法中最小。
+
+#思路：二分法。假设子序列的数量m是不确定的，那么如果m=1，我们知道返回的值就是整个序列的和nums_sum；如果m=nums.size()，那么子序列中的和的最大值就是nums中的最大值nums_max。因此我们可以知道我们要求的这个最大值一定是在[nums_max, nums_sum]范围内的，记为[l,r]。使用二分法假设最后的这个最大值是max_val = l + (r - l)/2，在进行nums数组的切分时，我们使得每个子串的和都小于等于max_val，按照这样的分法，判断子串的数目是否等于题目中的输入要求个数m，如果小于等于m，说明我们选择的这个max_val还可以更小，更新右边界r；如果子串个数大于m，说明我们的这个max_val太小，更新左边界l。
