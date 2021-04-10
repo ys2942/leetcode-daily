@@ -1,0 +1,45 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def recoverFromPreorder(self, S: str) -> TreeNode:
+        flag,pre=[],[]
+        c=0
+        s=''
+        flagx=True
+        for d in S:
+            if d!='-':
+                s+=d
+                if flagx or c!=0:
+                    flag.append(c)
+                    flagx=False
+                c=0
+            else:
+                if s!='':
+                    pre.append(s)
+                    s=''
+                c+=1
+        pre.append(s)
+        def dfs(pre,flag):
+            if len(pre)==1:
+                return TreeNode(pre[0])
+            root=TreeNode(pre[0])
+            level=flag[0]
+            for j in range(len(pre)-1,-1,-1):
+                if flag[j]==level+1:
+                    break
+            i=1
+            if i==j:
+                root.left=dfs(pre[1:],flag[1:])
+                return root
+            else:
+                lpre,rpre=pre[1:j],pre[j:]
+                lflag,rflag=flag[1:j],flag[j:]
+                root.left=dfs(lpre,lflag)
+                root.right=dfs(rpre,rflag)
+                return root
+        return dfs(pre,flag)
+#https://blog.csdn.net/qq_42232193/article/details/106835763?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_title-0&spm=1001.2101.3001.4242
