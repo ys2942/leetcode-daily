@@ -1,0 +1,52 @@
+# Definition for a binary tree node.
+# class Node(object):
+#     def __init__(self, val=" ", left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def expTree(self, s: str) -> 'Node':
+        operandStack = []
+        operatorStack = []
+        # CONSIDERATION: HIGHER THE OPERATION HIGHER IS THE PRECEDENCE
+        precedence = {'+': 1, '-': 1, '*': 2, '/': 2, '(': 3}
+        prevScore = 0
+        
+        def buildSubTree():
+            right = operandStack.pop()
+            left = operandStack.pop()
+            operandStack.append(Node(operatorStack.pop(), left, right))
+        
+        for ch in s:
+            if ch == ')':
+                while operatorStack[-1] != '(':
+                    buildSubTree()
+                
+                # POP OUT '('
+                operatorStack.pop()
+                prevScore = precedence[operatorStack[-1]] if operatorStack else 0
+                    
+            elif ch in precedence:
+                if ch == '(':
+                    prevScore = 0
+                    
+                elif prevScore < precedence[ch]:
+                    prevScore = precedence[ch]
+                    
+                else:
+                    while operatorStack and operatorStack[-1] != '(' and prevScore >= precedence[ch]:
+                        buildSubTree()
+                        
+                        if operatorStack:
+                            prevScore = precedence[operatorStack[-1]]
+                    
+                    prevScore = precedence[ch]
+                operatorStack.append(ch)
+                
+            else:
+                operandStack.append(Node(ch))
+        
+        while operatorStack and operatorStack[-1] != '(':
+            buildSubTree()
+        
+        return operandStack[0]
