@@ -1,0 +1,26 @@
+class SnapshotArray:
+
+    def __init__(self, length: int):
+        self.dif={}
+        self.snaps=[]
+        
+
+    def set(self, index: int, val: int) -> None:
+        self.dif[index]=val        
+
+    def snap(self) -> int:
+        self.snaps.append(self.dif.copy())
+        return len(self.snaps)-1
+        
+
+    def get(self, index: int, snap_id: int) -> int:
+        return self.snaps[snap_id][index] if index in self.snaps[snap_id] else 0
+    
+#https://coordinate.blog.csdn.net/article/details/98485378?utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-3.control&dist_request_id=1330144.21504.16181168661018457&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-3.control
+
+
+# Your SnapshotArray object will be instantiated and called as such:
+# obj = SnapshotArray(length)
+# obj.set(index,val)
+# param_2 = obj.snap()
+# param_3 = obj.get(index,snap_id)
