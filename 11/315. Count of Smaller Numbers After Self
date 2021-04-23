@@ -1,0 +1,23 @@
+class Solution:
+    def countSmaller(self, nums: List[int]) -> List[int]:
+        smaller = [0 for i in range(len(nums))]
+        self.sort(list(enumerate(nums)), smaller)
+        return smaller
+
+    def sort(self, enum, smaller):
+        mid = len(enum)//2
+        if not mid:
+            return enum
+        left, right = self.sort(enum[:mid], smaller), self.sort(enum[mid:], smaller)
+        p = q = 0
+        m, n = len(left), len(right)
+        while p < m or q < n:
+            if q == n or p < m and left[p][1] <= right[q][1]:
+                enum[p+q] = left[p]
+                smaller[left[p][0]] += q
+                p += 1
+            else:
+                enum[p+q] = right[q]
+                q += 1
+        return enum
+    #https://www.jianshu.com/p/5c70c4846833
