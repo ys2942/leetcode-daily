@@ -1,0 +1,14 @@
+class Solution:
+    def createSortedArray(self, instructions: List[int]) -> int:
+        from sortedcontainers import SortedList
+        n = len(instructions)
+        nums = SortedList()
+        mod = 10**9 + 7
+        res = 0
+        for i in range(n):
+            pleft = nums.bisect_left(instructions[i])
+            pright = nums.bisect_right(instructions[i])
+            res = (res + min(pleft, i-pright)) % mod
+            nums.add(instructions[i])
+        return res % mod
+#https://blog.csdn.net/qq_30124241/article/details/114389836
