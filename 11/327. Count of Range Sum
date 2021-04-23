@@ -1,0 +1,11 @@
+class Solution:
+    def countRangeSum(self, nums: List[int], lower: int, upper: int) -> int:
+        s=[0]
+        res=cur=0
+        for v in nums:
+            cur+=v
+            res+=bisect.bisect_right(s,cur-lower)-bisect.bisect_left(s,cur-upper)#有几个和是满足条件的
+            bisect.insort_right(s,cur)
+            
+        return res
+#https://blog.csdn.net/weixin_43336281/article/details/109543181
