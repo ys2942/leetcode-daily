@@ -1,0 +1,8 @@
+class Solution:
+    def reversePairs(self, nums: List[int]) -> int:
+        ls, count = [], 0
+        for i in range(len(nums) - 1, -1, -1):
+            j = bisect.bisect_left(ls, nums[i])#比前面多少个数字大
+            count += j
+            bisect.insort(ls, 2 * nums[i])
+        return count
