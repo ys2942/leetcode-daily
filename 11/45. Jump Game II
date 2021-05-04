@@ -1,0 +1,15 @@
+class Solution:
+    def jump(self, nums: List[int]) -> int:
+        cur=0
+        N=len(nums)
+        count=0
+        pos=0
+        while cur<N-1:
+            count+=1
+            pre=cur
+            while pos<=pre:
+                cur=max(cur,pos+nums[pos])
+                pos+=1
+        return count
+#我们每次贪心的找在自己当前能到达的几个位置里面，跳到哪个位置的时候，在下一步能跳的最远。然后，我们当前步就跳到这个位置上去，所以我们在这一步的跳跃时，给下一步留下了最好的结果。
+#https://blog.csdn.net/fuxuemingzhu/article/details/84578893        
