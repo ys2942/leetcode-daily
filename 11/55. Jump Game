@@ -1,0 +1,10 @@
+class Solution:
+    def canJump(self, nums: List[int]) -> bool:
+        can_reach=0 #记录到目前为止我能够到达的最远的距离
+        index=0
+        while index<=can_reach and index<len(nums):
+            can_reach=max(can_reach,index+nums[index])
+            if can_reach>=len(nums)-1:
+                return True
+            index+=1
+        return False
