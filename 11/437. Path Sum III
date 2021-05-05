@@ -1,0 +1,25 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def pathSum(self, root: TreeNode, sum: int) -> int:
+        self.result=0
+        curSum=collections.defaultdict(int)
+        curSum[0]=1
+        def helper(curSum,root,curVal,target):
+            if not root:
+                return
+            curVal+=root.val
+            self.result+=curSum[curVal-target]
+            curSum[curVal]+=1
+            if root.left:
+                helper(curSum,root.left,curVal,target)
+            if root.right:
+                helper(curSum,root.right,curVal,target)
+            curSum[curVal]-=1
+        if root:
+            helper(curSum,root,0,sum)
+        return self.result
