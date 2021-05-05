@@ -1,0 +1,32 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def findLargestBST(self, node: TreeNode) -> int:
+        is_bst_at_node=True
+        bst_size_left=0
+        bst_size_right=0
+        max_at_left=-math.inf
+        max_at_right=-math.inf
+        min_at_left=math.inf
+        min_at_right=math.inf
+        
+        if node.left:
+            is_bst_at_left,bst_size_left,min_at_left,max_at_left=self.findLargestBST(node.left)
+            is_bst_at_node=node.left.val<node.val and max_at_left<node.val and is_bst_at_left
+            
+        if node.right:
+            is_bst_at_right,bst_size_right,min_at_right,max_at_right=self.findLargestBST(node.right)
+            is_bst_at_node=is_bst_at_node and node.right.val>node.val and min_at_right>node.val and is_bst_at_right
+        
+        return is_bst_at_node,(1+bst_size_left+bst_size_right if is_bst_at_node else max(bst_size_left,bst_size_right)),min(node.val,min_at_left,min_at_right), max(node.val,max_at_left,max_at_right)
+    
+    def largestBSTSubtree(self, root: TreeNode) -> int:
+        if root:
+            is_bst,bst_max_depth,min_left,min_right=self.findLargestBST(root)
+            return bst_max_depth
+        else:
+            return 0
