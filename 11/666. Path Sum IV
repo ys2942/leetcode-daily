@@ -1,0 +1,25 @@
+class Solution:
+    def pathSum(self, nums: List[int]) -> int:
+        paths={}
+        for x in nums:
+            D,P,V=x//100,(x//10)%10,x%10
+            paths[2**(D-1)+P-1]=V   #id=2^(d−1)+p−1，将 id 和 val 存入哈希 map
+            
+        stack=[(1,0)]
+        total=0
+        
+        while stack:
+            node,curr_sum=stack.pop()
+            if 2*node not in paths and 2*node+1 not in paths:
+                total+=curr_sum+paths[node]
+                continue
+                
+            curr_sum+=paths[node]
+            
+            if 2*node in paths:
+                stack.append((2*node,curr_sum))
+            if 2*node+1 in paths:
+                stack.append((2*node+1,curr_sum))
+                
+        return total
+#https://michael.blog.csdn.net/article/details/107120811?utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-2.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7Edefault-2.control
