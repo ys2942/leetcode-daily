@@ -1,0 +1,23 @@
+class Solution:
+    def maxJumps(self, arr: List[int], d: int) -> int:
+        n, ans = len(arr), 0
+        dp, visited = [1 for _ in range(n)], [0 for _ in range(n)]
+        def jump(i):
+            if not visited[i]:
+                visited[i] = 1
+                j = i-1
+                while max(0, i-d) <= j and arr[j] < arr[i]:
+                    dp[i], j = max(dp[i], jump(j)+1), j-1
+                j = i+1
+                while j <= min(len(arr)-1, i+d) and arr[j] < arr[i]:
+                    dp[i], j = max(dp[i], jump(j)+1), j+1
+            return dp[i]
+        #n, ans = len(arr), 0
+        #dp, visited = [1 for _ in range(n)], [0 for _ in range(n)]
+        for i in range(n):
+            ans = max(ans, jump(i))
+        return ans
+    
+#首先根据题意，只能往低了跳，且中间不能遇到比我高的
+#用 dp[i] 表示从 i 开始跳，最多可以跳的台阶数
+#那么 dp 需要从低的开始往高的计算，所以要先排序
