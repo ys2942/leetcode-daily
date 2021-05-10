@@ -1,0 +1,35 @@
+class Solution:
+    def oddEvenJumps(self, arr: List[int]) -> int:
+        n=len(arr)
+        nexthigher,nextlower=[0]*n,[0]*n
+        st=[]
+        for a,i in sorted([a,i] for i,a in enumerate(arr)):
+            while st and st[-1]<i:
+                nexthigher[st.pop()]=i
+            st.append(i)
+            
+        st=[]
+        for a,i in sorted([-a,i] for i,a in enumerate(arr)):
+            while st and st[-1]<i:
+                nextlower[st.pop()]=i
+            st.append(i)
+            
+        higher,lower=[0]*n,[0]*n
+        higher[-1]=lower[-1]=1
+        for i in reversed(range(n-1)):
+            higher[i]=lower[nexthigher[i]]
+            lower[i]=higher[nextlower[i]]
+        return sum(higher)
+
+#Odd Even指的是跳的次数的奇偶，所以对于任意一个index，需要同时记录奇数次被跳到和偶数次被跳到的结果。如果是奇数次被跳到，取后面的比它大的所有数中最小的(next_higher)；如果是偶数次被跳到，取后面的比它小的所有数中最大的(next_lower)。
+#对于在任意一个index第一次跳的时候，第一次肯定是奇数次，所以都是按奇数次跳规则玩。一个多赞解法by @lee215 中，建了两个list, next_higher是为了记录奇数次跳的话跳去哪个index，next_lower记录了偶数次跳跳去了哪个index。一次一次的跳，奇偶是交替进行着的，所以奇后偶，偶后奇，对应的就是next higher -> next lower -> next higher -> next lower -> ...
+
+#到最后一步for loop循环中，两个list互相迭代lower from higher and goes to higher，从最后一个index开始直到index 0。higher记录了在每个index能够成功的结果，成功是1，不成功是0。最后对higher求和。    
+
+
+
+
+#对于odd jump，我们要找到之后的第一个>= 的数。先建立一个index数组，将index数组根据对应 A[i] 的值从小到大排序，依次放入一个index单调递减的stack内。
+#while 循环，如果新入栈的index比栈顶元素大 (这里就可以保证当前index i>s.top() && A[i]>=A[s.top()])，那么 oddnext[s.top()] = i.
+#这道题给了一个数组，可以在任意的位置进行跳跃，分为奇数跳跃和偶数跳跃。第一次跳跃就是奇数跳跃，第二次就是偶数，第三次又是奇数，以此类推。奇数跳跃时到达的位置上的数字必须要大于等于起跳位置的数字，若有多个位置的数字都大于等于起跳位置，选其中最小的，若数字相同，选坐标最小的。而偶数跳跃到达的位置上的数字必须要小于等于起跳位置的数字，若有多个位置的数字都小于等于起跳位置，选其中最大的，若数字相同，选坐标最小的。现在定义了一种好起点，需要能按照上面的跳跃方式到达数组最后一个位置，问有多少个这样的好起点。
+#由于起点是任意的，那么若起点就是在最后一个位置，则就不用跳了，所以结果 res 可以初始化为1。然后就可以往前推，对于前一个数字和当前数字的关系，实际上就是大于等于，或者小于等于，可以分别对应两种跳法，这样其实每个位置上就有两种状态，一种是能否跳到大于等于的位置，用 higher 表示，一种是能否跳到小于等于的位置，用 lower 表示。这样就可以用两个数组 higher 和 lower 表示，其中 higher[i] 表示起点为i位置，首先跳到大于等于的位置（奇数跳跃），看是否能跳到末尾位置，这个就是题目所要求的。lower[i] 表示起点为i位置，首先跳到小于等于的位置（偶数跳跃），看是否能跳到末尾位置。
