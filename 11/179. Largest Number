@@ -1,0 +1,22 @@
+class Solution:
+    def smaller(self,a,b):
+        strA=str(a)+str(b)
+        strB=str(b)+str(a)
+        if strA>strB:
+            return False
+        else:
+            return True
+        
+    def largestNumber(self, nums: List[int]) -> str:
+        resultStr=""
+        for i in range(len(nums)):
+            for j in range(i,len(nums)):
+                if self.smaller(nums[i],nums[j]):
+                    nums[i],nums[j]=nums[j],nums[i]
+        for i in nums:
+            resultStr=resultStr+str(i)
+        if (resultStr[0]=='0'):
+            return '0'
+        return resultStr
+#https://www.jianshu.com/p/960cf375c40a
+#https://blog.csdn.net/AIpush/article/details/103809256冒泡排序
