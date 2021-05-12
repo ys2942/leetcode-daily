@@ -1,0 +1,35 @@
+class Solution:
+    def findUnsortedSubarray(self, nums: List[int]) -> int:
+        l = sorted(nums)
+        if l == nums:
+            return 0
+        start, end = float('inf'), 0
+        for i, v in enumerate(nums):
+            if v != l[i]:
+                start = min(start,i)
+                end = max(end, i)
+        if start == end:
+            return 0
+        
+        return end - start + 1
+                
+                
+ class Solution(object):
+    def findUnsortedSubarray(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        my_list = sorted(nums)
+        if my_list == nums:
+            return 0
+        else:
+            for i in range(len(nums)):
+                if my_list[i] != nums[i]:
+                    firstindex = i
+                    break
+            for i in range(len(nums)-1,-1,-1):
+                if my_list[i] != nums[i]:
+                    lastindex = i
+                    break
+            return (lastindex - firstindex + 1)
