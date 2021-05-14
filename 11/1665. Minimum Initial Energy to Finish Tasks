@@ -1,0 +1,12 @@
+class Solution:
+    def minimumEffort(self, tasks: List[List[int]]) -> int:
+        tasks=sorted(tasks, key = lambda x: x[1] - x[0], reverse = True)
+        saving, res = 0, 0
+        for cost, mmin in tasks:
+            if mmin > saving:
+                res += mmin - saving
+                saving = mmin
+            saving -= cost
+        return res
+#每个任务有<消耗能量，启动所需最小能量>，问至少需要多少能量能完成所有任务。启动所需能量-消耗能量=完成任务所省下的能量，为了能让所须能量尽量小，也就是尽量在完成任务时省下能量，以（启动所需能量-消耗能量）从大到小排序作为完成所有任务的顺序。按照该顺序依次遍历任务，saving记录当前所剩下的能量，当所需mmin大于saving时，总所须res添加(mmin-saving)新能量，此时saving = mmin - saving + saving - cost = mmin - cost。
+
