@@ -1,0 +1,40 @@
+class Solution:
+    def scoreOfParentheses(self, s: str) -> int:
+        stack = [0]
+        for c in s:
+            if c == '(':
+                stack.append(0)
+            else:
+                v = stack.pop()
+                stack[-1] += max(v * 2, 1)
+        return sum(stack)
+        
+        
+#括号匹配的题目，但是这个匹配题目给定了条件：如果是()得1分，如果AB形式得2分，如果(A)分数是2×A.求最终多少分。
+#如果一个栈里面只放数值的话，那么，我们可以把遇到的左括号变成0放到栈里面。我们遇到右括号的时候，把前面的数字乘以2重新放入栈的末尾，但是()是直接放入1的。为了防止栈为空，那么在栈开始的时候放入一个0，当把栈过了一遍之后，剩余的数字就是所求。
+#https://blog.csdn.net/fuxuemingzhu/article/details/84956643
+
+class Solution:
+    def scoreOfParentheses(self, s: str) -> int:
+        stack = []
+        score = 0
+        for c in s:
+            if c == '(':
+                stack.append('(')
+            else:
+                tc = stack[-1]
+                if tc == '(':
+                    stack.pop()
+                    stack.append(1)
+                else:
+                    num = 0
+                    while stack[-1] != '(':
+                        num += stack.pop()
+                    stack.pop()
+                    stack.append(num * 2)
+        return sum(stack)
+#括号匹配的题目，但是这个匹配题目给定了条件：如果是()得1分，如果AB形式得2分，如果(A)分数是2×A.求最终多少分。
+#括号匹配的题目一般要用到栈，这个题也是。我们用栈保存两样东西：一是左括号(，二是得分。这样我们在遇到)返回的时候，可以直接判断栈里面是左括号还是得分。如果是左括号(，那么得分是1，放入栈中。如果是得分，那么我们需要一直向前求和直到找到左括号为止，然后把这个得分×2，放入栈中。
+#由于题目给的是符合要求的括号匹配对，那么栈里面最后应该只剩下一个元素了，就是最终得分。
+
+
