@@ -1,0 +1,21 @@
+class Solution:
+    def diffWaysToCompute(self, input: str) -> List[int]:
+
+
+        end = []
+        op = {'+':add, 
+              '-':sub,
+              '*':mul}
+        
+        for i,k in enumerate(input):
+            if k in op:
+                for left in self.diffWaysToCompute(input[:i]):
+                    for right in self.diffWaysToCompute(input[i+1:len(input)]):
+                        output = op[k](left, right)
+                        end.append(output)
+        
+        if len(end) == 0:
+            return [int(input)]
+        
+        return end
+#https://blog.csdn.net/qq_43235359/article/details/88659523?utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-1.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-1.control
