@@ -1,0 +1,19 @@
+class Solution:
+    def countTriplets(self, arr: List[int]) -> int:
+        preXOR = []
+        res = 0
+        temp = 0
+        for i in arr:
+            temp ^= i
+            preXOR.append(temp)
+        
+        for i in range(len(arr)):
+            for k in range(i+1, len(arr)):
+                if preXOR[i] ^ arr[i] == preXOR[k]:
+                    res += k - i
+        return res  
+#https://blog.csdn.net/qq_38737428/article/details/117090153?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_title-4&spm=1001.2101.3001.4242
+#也就是说arr从i项到第k项的异或值等于0
+#所以在这时候 我们只需要列举出i和k的位置就可以了
+#j无论在哪 都不影响结果 因为当a=b的时候 中间那一块都等于0
+#也就是说 当前缀异或数组前i-1项和前k项相等 就满足条件（i-k项异或为0）
