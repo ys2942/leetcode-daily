@@ -1,0 +1,26 @@
+class Solution:
+    def getMaxLen(self, nums: List[int]) -> int:
+        pos_len = 0
+        neg_len = 0
+        ans = 0
+        for num in nums:
+            if num == 0:
+                pos_len = neg_len = 0
+            elif num < 0:
+                pos_len, neg_len = neg_len, pos_len
+                neg_len += 1
+                if pos_len > 0:
+                    pos_len += 1
+            else:
+                pos_len += 1
+                if neg_len > 0:
+                    neg_len += 1
+            ans = max(ans, pos_len)
+        return ans
+#这种判断正负的题目往往都是通过正负得负，负负得正这样的方式来进行交换得到的，之前也有过类似的题目：比如Leetcode 152 Maximum Product Subarray
+#这题具体的解析如下：
+#The main idea here is to keep a count of running positive array length and negative array length.
+#if nums[i] < 0, since any negative number would make the positive array as negative and a negative array as positive, we swap the positive and negative length, and increase the negativeLength and if the positive length array > 0, we increament that as well.
+#if nums[i] == 0, we reset positive and negative length to 0
+#else if nums[i] > 0, we increament the positive length and if there is a negative product array, we increment negative length, since any positive number will keep the negative array as negative and positive array as positive.
+#We keep updating the maxPositive for every number, and then return it in the end.
