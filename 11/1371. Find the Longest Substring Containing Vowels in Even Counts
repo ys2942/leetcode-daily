@@ -16,3 +16,14 @@ class Solution:
 #如果对两个二进制做异或，会对其每一位进行位运算，如果相同则位 0，否则位 1。
 #- 如果两个数字奇偶性相同，那么其相减一定是偶数。
 #- 如果两个数字奇偶性不同，那么其相减一定是奇数
+class Solution:
+    def findTheLongestSubstring(self, s: str) -> int:
+        for long in range(len(s),0,-1):
+            for i in range(len(s)-long+1):
+                temp=s[i:i+long]
+                for v in 'aeiou':
+                    if temp.count(v)%2:
+                        break
+                else:
+                    return long
+        return 0
