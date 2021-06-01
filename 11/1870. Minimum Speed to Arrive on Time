@@ -1,0 +1,19 @@
+class Solution:
+    def minSpeedOnTime(self, dist: List[int], hour: float) -> int:
+        n = len(dist)
+        if hour <= n-1:
+            return -1
+        elif hour >= sum(dist):
+            return 1
+        l, r =1, 10000001
+        while l + 1 <r:
+            s = l+(r-l)//2
+            t = sum([math.ceil(d/s) for d in dist[:-1]]) +dist[-1]/s
+            if t<=hour:
+                r=s
+            else:
+                l =s
+        return r
+#这一题我们可以采用二分法对答案进行求解。
+
+#首先，我们先排除掉两种特殊情况，一种是当给的时间过短，导致任何速度都无法准时到达的情况，另一种是给的时间过短，哪怕速度为1都能够准点到达的情况，最后，我们使用二分法即可确定最终的答案。
