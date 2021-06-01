@@ -1,0 +1,12 @@
+class Solution:
+    def specialArray(self, nums: List[int]) -> int:
+        n = len(nums)
+        prev = -1
+        nums.sort()
+        for i in range(n):
+            if n - i <= nums[i] and n - i > prev:
+                return n - i
+            prev = nums[i]
+        return -1
+#首先对数组进行排序，然后从左到右进行判断，如果n-i<=nums[i]说明找到了一个符合条件的值，但是题目中给出x是唯一的，因此不会是重复值，用prev记录一下前面遍历的值，利用n-i>prev可以保证这一点。
+#https://blog.csdn.net/w5688414/article/details/109142571
