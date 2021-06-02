@@ -1,0 +1,27 @@
+class Solution:
+    def maxValue(self, n: int, index: int, maxSum: int) -> int:
+        left =1 
+        right = maxSum
+        while left < right:
+            mid = right -(right - left)//2
+            if self.count(mid, n, index)<=maxSum:
+                left = mid
+            else:
+                right = mid-1
+        return left
+    
+    def count(self, h, n, index):
+        sum = 0
+        if h > index:
+            sum += (h-index+h)*(index+1)/2
+        else:
+            sum += index-h+1
+            sum +=(1+h)*h/2
+        if h> n-index:
+            sum += (h-(n-index)+1+h)*(n-index)/2
+        else:
+            sum += n-(index + h)
+            sum += (1+h)*h/2
+        return sum -h
+#https://www.youtube.com/watch?v=TmB1IuJus4w
+        
