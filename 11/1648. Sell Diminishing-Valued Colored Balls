@@ -1,0 +1,23 @@
+class Solution:
+    def maxProfit(self, inventory: List[int], orders: int) -> int:
+        MOD = 10 ** 9 + 7
+        inventory.sort(reverse = True)
+        res, cur, i, N = 0, inventory[0], 0, len(inventory)
+        while orders:
+            while i < N and inventory[i] == cur:
+                i += 1
+            nxt = 0 if i ==N else inventory[i]
+            cnt = min(orders, i*(cur - nxt))
+            t = cur - nxt
+            r = 0
+            if orders < i*(cur - nxt):
+                t = orders // i
+                r = orders % i
+            nxt_p = cur - t
+            res = (res + (cur + nxt_p + 1) * t // 2 * i + nxt_p * r)% MOD
+            orders -= cnt
+            cur = nxt
+        return res
+    
+#https://zhuanlan.zhihu.com/p/280704529
+#https://www.youtube.com/watch?v=kBxqAnWo9Wo
