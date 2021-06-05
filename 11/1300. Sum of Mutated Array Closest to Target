@@ -1,0 +1,26 @@
+class Solution:
+    def findBestValue(self, arr: List[int], target: int) -> int:
+        arr.sort()
+        n=len(arr)
+        prefix=[0]
+        s=0
+        for i in range(n):
+            s+=arr[i]
+            prefix.append(s)
+        i,j = 0, arr[-1]
+        while i+1<j:
+            mid = i+(j-i)//2
+            index = bisect.bisect_left(arr, mid)
+            s=prefix[index]+mid*(n-index)
+            if s==index:
+                return mid
+            elif s> target:
+                j=mid
+            else:
+                i=mid
+        a=bisect.bisect_left(arr, i)
+        a=prefix[a]+i*(n-a)
+        b=bisect.bisect_left(arr,j)
+        b=prefix[b]+j*(n-b)
+        return i if abs(a-target)<=abs(b-target) else j
+#https://blog.csdn.net/qq_39378221/article/details/106744139
