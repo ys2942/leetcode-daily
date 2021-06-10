@@ -1,0 +1,17 @@
+class Solution:
+    def smallestRange(self, nums: List[List[int]]) -> List[int]:
+        l, r = -float('inf'), float('inf')
+        maxV = max(vec[0] for vec in nums)
+        queue = [(vec[0], i, 0) for i, vec in enumerate(nums)]
+        heapq.heapify(queue)
+        
+        while True:
+            minV, row, idx = heapq.heappop(queue)
+            if maxV - minV < r - l:
+                l, r = minV, maxV
+            if idx == len(nums[row]) - 1:
+                break
+            maxV = max(maxV, nums[row][idx+1])
+            heapq.heappush(queue, (nums[row][idx+1], row, idx+1))
+        return [l, r]
+            
