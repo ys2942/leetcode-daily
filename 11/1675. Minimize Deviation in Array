@@ -1,0 +1,25 @@
+class Solution:
+    def minimumDeviation(self, nums: List[int]) -> int:
+        evens = []
+        minimum = float('inf')
+        for num in nums:
+            if num%2 == 0:
+                evens.append(-num)
+                minimum = min(minimum, num)
+            else:
+                evens.append(-num*2)
+                minimum = min(minimum, num*2)
+        heapq.heapify(evens)
+        res = float('inf')
+        while evens:
+            curr = -heapq.heappop(evens)
+            res = min(res, curr - minimum)
+            if curr%2 ==0:
+                minimum = min(minimum, curr//2)
+                heapq.heappush(evens, -curr//2)
+            else:
+                break
+        return res
+#https://www.programiz.com/python-programming/break-continue
+#先将所有数变成偶数，这样所有数都只能除以二操作了。
+#所有数放入大根堆中，每次将最大的数除以二，然后算出当前最小值最大值的差值。
