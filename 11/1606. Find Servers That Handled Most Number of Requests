@@ -1,0 +1,21 @@
+class Solution:
+    def busiestServers(self, k: int, arrival: List[int], load: List[int]) -> List[int]:
+        busy = []
+        free = list(range(k))
+        freq = [0]*k
+        
+        for i, (ta, tl) in enumerate(zip(arrival, load)):
+            while busy and busy[0][0]<=ta:
+                _, ii = heappop(busy)
+                heappush(free, i+(ii-i)%k)
+            if free:
+                ii = heappop(free)%k
+                freq[ii] += 1
+                heappush(busy, (ta+tl, ii))
+        
+        mx = max(freq)
+        return [i for i, x in enumerate(freq) if x==mx]
+#https://leetcode.com/problems/find-servers-that-handled-most-number-of-requests/discuss/1089184/Python3-summarizing-3-approaches
+#https://www.youtube.com/watch?v=9OqDLNyL8Fs
+#Here, the trick is to relocate a freed server to a later place by circularly adjusting its index. In this way, when we are looking server ii at position i where ii < i, we will free ii to a place ii + x*k where x is enough so that ii+x*k bearly passes i. Mathematically, i + (ii-i)%k does the trick.
+
