@@ -1,0 +1,22 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def nextLargerNodes(self, head: ListNode) -> List[int]:
+        nums = []
+        while head:
+            nums.append(head.val)
+            head = head.next
+        stack = []
+        res = [0]*len(nums)
+        for i, n in enumerate(nums):
+            while stack and nums[stack[-1]]<n:
+                res[stack.pop()]=n
+            stack.append(i)
+        return res
+#https://blog.csdn.net/fuxuemingzhu/article/details/89048785
+#首先，把链表遍历一遍，转化成数组问题。
+#然后遍历数组，需要维护单调递减栈，每个元素的位置都要往栈里面放，放之前先把栈里面小于该元素的全部弹出。
+#如果遇到了一个数字n比栈顶元素stack[-1]为下标的数字更大时，需要一直退栈，而且每次退栈的时候都要把该栈顶元素stack[-1]对应res位置的结果设置为n。退栈到栈顶元素大于等于目前元素为止。
