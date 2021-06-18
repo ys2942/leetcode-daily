@@ -1,0 +1,22 @@
+class Solution:
+    def longestWPI(self, hours: List[int]) -> int:
+        dic = {}
+        count = 0
+        res = 0
+        for i in range(len(hours)-1):
+            count = count + 1 if hours[i] > 8 else count - 1
+            if count not in dic:
+                dic[count] = i
+            if count - 1 in dic:
+                res = max(res, i-dic[count-1])
+            if count ==1:
+                res = max(res, i+1)
+        
+        count = 0         
+        for i in range(len(hours)-1, -1, -1):
+            count = count +1 if hours[i]>8 else count - 1
+            if count>0: res = max(res, len(hours)-i)
+
+        return res
+#解题思路：假设i~j (j不是hours中最后一个元素) 区间是最长符合条件的时间段，那么必定在这个区间内大于8的元素的总数减去小于8的元素的总数的值为1。这里可以通过反证法，如果差值大于1，那么无论第j+1的元素大于还是小于8，i~j+1区间内大于8的元素总数必定是大于小于8的元素的总数的。知道了这个规律就很好办了，遍历hours数组，记录从0开始的0~i区间内大于8的元素的总数与小于8的元素的总数的差值，并记为val[i]，如果j元素是最长区间内最后一个元素，那么只要找到第一个i满足 val[j] - val[i] = 1即可，再判断一下val[j]是否大于0，如果大于0则表示考虑到最长区间是0~j。最后一步再针对最后一个元素单独计算依次即可。
+#https://www.cnblogs.com/seyjs/p/11385853.html
