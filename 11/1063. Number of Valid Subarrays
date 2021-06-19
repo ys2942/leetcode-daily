@@ -1,0 +1,26 @@
+class Solution:
+    def validSubarrays(self, nums: List[int]) -> int:
+        stack = []
+        result = 0
+        nums.append(-float('inf'))
+        for i in range(len(nums)):
+            while stack and nums[i] < nums[stack[-1]]:
+                result += i-stack[-1]
+                stack.pop()
+            stack.append(i)
+        return result
+#https://www.youtube.com/watch?v=M_V9AP9N0sA
+class Solution:
+    def validSubarrays(self, nums: List[int]) -> int:
+        stack = []
+        result = 0
+        nums.append(-float('inf'))
+        for i in range(len(nums)):
+            while stack and nums[i] < nums[stack[-1]]:
+                result += len(stack)
+                stack.pop()
+            stack.append(i)
+        return result
+#https://www.youtube.com/watch?v=M_V9AP9N0sA
+#最左端元素 到比他小的元素停
+#我的理解 以最右为终点的元素有多少stack.pop()
