@@ -1,0 +1,43 @@
+class Solution:
+    def minOperations(self, nums1: List[int], nums2: List[int]) -> int:
+        if len(nums1)>6*len(nums2) or len(nums2)>6*len(nums1):
+            return -1
+        nums1.sort()
+        nums2.sort()
+        
+        s1 = sum(nums1)
+        s2 = sum(nums2)
+        
+        if s1 > s2:
+            d = s1 - s2
+        else:
+            d = s2 - s1
+            nums1, nums2 = nums2, nums1
+        i, j = len(nums1)-1, 0
+        rem=0
+        cnt=0
+        while rem<d:
+            if i==-1:
+                rem+=6-nums2[j]
+                j+=1
+                cnt+=1
+                continue
+            elif j ==len(nums2):
+                rem+=nums1[i]-1
+                i-=1
+                cnt+=1
+                continue
+            if nums1[i]-1>6-nums2[j]:
+                rem+=nums1[i]-1
+                i-=1
+            else:
+                rem+=6-nums2[j]
+                j+=1
+            cnt+=1
+        return cnt
+#首先排除数组长度相差超过 6 倍的情况，该条件下无解。
+#对所给数组进行排序，之后根据总和的大小情况，在两个数组的头或尾各设计一个指针，从最小或最大的数字开始操作，直至数组和相等。
+#https://www.youtube.com/watch?v=HK7o2pQRvMQ
+            
+                
+        
