@@ -1,0 +1,60 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def reorderList(self, head: ListNode) -> None:
+        """
+        Do not return anything, modify head in-place instead.
+        """
+        if not head:
+            return
+        fast, slow = head, head
+        while fast and fast.next:
+            fast = fast.next.next
+            slow = slow.next
+            
+        later = slow.next
+        slow.next = None
+        node = None
+        while later:
+            tmp = later.next
+            later.next = node
+            node = later
+            later = tmp
+        p = head
+        while node:
+            tmp = node.next
+            node.next = p.next
+            p.next = node
+            p = p.next.next
+            node = tmp
+#在不开辟二外空间的情况下。
+#（1）扫描一边链表，找到中间位置。
+#（2）把中间位置后面的链表倒置，（可以使用头插法完成）
+#（3）把链表的两部分，按照规则重新合并，即可
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def reorderList(self, head: ListNode) -> None:
+        """
+        Do not return anything, modify head in-place instead.
+        """
+        if not head:
+            return
+        ltmp = []
+        cur = head
+        while cur:
+            ltmp.append(cur)
+            cur = cur.next
+        
+        n = len(ltmp)
+        for i in range(n//2):
+            ltmp[i].next = ltmp[n-1-i]
+            ltmp[n-1-i].next=ltmp[i+1]
+        ltmp[n//2].next = None
