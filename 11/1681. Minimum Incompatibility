@@ -1,0 +1,23 @@
+class Solution:
+    def minimumIncompatibility(self, nums: List[int], k: int) -> int:
+        d = len(nums)//k ## the length of each partition
+        count = collections.Counter(nums)
+        if max(count.values())>k:
+            return -1
+        
+        @lru_cache(None)
+        def dfs(nums):
+            if not nums:
+                return 0
+            res = float('inf')
+            for combs in itertools.combinations(nums, d): ## choose a as a partition
+                if len(combs)!=len(set(combs)):
+                    continue
+                nxt_nums = list(nums)
+                for cand in combs: ## numbers left after removing partition a
+                    nxt_nums.remove(cand)
+                res = min(res,max(combs)-min(combs) +dfs(tuple(nxt_nums)))
+            return res
+        
+        ans = dfs(tuple(nums)) # turn the input into a tuple so the function can be cached
+        return ans if ans!=float('inf') else -1
