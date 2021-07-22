@@ -1,0 +1,49 @@
+class Solution:
+    def regionsBySlashes(self, grid: List[str]) -> int:
+        # colors = [down, right]
+        N = len(grid)
+        mapping = collections.defaultdict(set)
+        colors = [[i,0] for i in range(N)]
+        color = N-1
+        for row in grid:
+#            print colors, row
+            for i, ch in enumerate(row):
+                if i > 0:
+                    right = colors[i-1][1] 
+                else:
+                    color += 1
+                    right = color
+                down = colors[i][0]
+#                print i, ch, right, down
+                if ch == ' ':
+                    if right != down:
+                        mapping[right].add(down)
+                        mapping[ down].add(right)
+                    colors[i] = [down, down]
+                elif ch == '/':
+                    if right != down:
+                        mapping[right].add(down)
+                        mapping[ down].add(right)
+                    color += 1
+                    colors[i] = [color, color]
+                else:
+                    colors[i] = [right, down]       
+        
+#        print colors
+
+        color += 1
+#        print color, mapping
+        visited, count = [False] * color, 0
+        for item in range(color):
+            if visited[item]: continue
+            count += 1
+            level, visited[item] = [item], True
+            while level:
+                co = level.pop()
+                for c in mapping[co]:
+                    if not visited[c]:
+                        level.append(c)
+                        visited[c] = True
+        
+        return count
+#https://www.cnblogs.com/captain-dl/p/10887778.html
