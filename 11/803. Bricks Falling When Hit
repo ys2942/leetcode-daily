@@ -1,0 +1,40 @@
+class Solution:
+    def hitBricks(self, grid, hits):
+        rows,cols = len(grid),len(grid[0]) if grid else 0
+        res = []
+        if (rows == 0 or cols == 0):
+            return 0
+        for x,y in hits:
+            if (grid[x][y] == 1):#bug3 empty hits use same flg
+                grid[x][y] = 3
+        def dfs(xx,yy):
+            nonlocal rows,cols,grid
+            res = 1
+            grid[xx][yy] = 2
+            for dx,dy in [(0,1),(0,-1),(1,0),(-1,0)]:
+                nx,ny = xx+dx,yy+dy
+                if (nx>=0 and nx<rows and ny>=0 and ny<cols and grid[nx][ny]==1):
+                    res += dfs(nx,ny)
+            return res
+        def is_connected(xx,yy):
+            nonlocal rows,cols,grid
+            return any(nx>=0 and nx<rows and ny>=0 and ny<cols and grid[nx][ny]==2
+                         for nx,ny in [(xx+1,yy),(xx-1,yy),(xx,yy-1),(xx,yy+1)])
+        for j in range(cols):
+            if (grid[0][j] == 1):
+                dfs(0,j)
+ 
+        for x,y in hits[::-1]:
+            if (grid[x][y] == 3):
+                if (is_connected(x,y) or x == 0): #bug1: forget == 0
+                    res.append(dfs(x,y)-1)
+                else:
+                    grid[x][y] = 1  #bug2:
+                    res.append(0)
+            else:
+                res.append(0)
+        return res[::-1]
+
+————————————————
+版权声明：本文为CSDN博主「taoqick」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/taoqick/article/details/107802568
