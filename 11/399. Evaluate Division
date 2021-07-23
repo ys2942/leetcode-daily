@@ -1,0 +1,43 @@
+class Solution:
+    def calcEquation(self, equations: List[List[str]], values: List[float], queries: List[List[str]]) -> List[float]:
+        eqDict = collections.defaultdict(list)
+        for idx, [n,d] in enumerate(equations):
+            eqDict[n].append([d, values[idx]])
+            eqDict[d].append([n, 1/values[idx]])
+        
+        visited = set()
+        ref = {}
+        def dfs(nx, dx):
+            if nx + '_' + dx in ref:
+                if ref[nx+'_'+dx] == -1:
+                    return False, float(-1)
+                return True, ref[nx+'_'+dx]
+            
+            for nxx, val in eqDict[nx]:
+                if dx == nxx:
+                    ref[nx+'_'+dx]=val
+                    return True, val
+                
+            for nxx, val in eqDict[nx]:
+                if nx+'_'+nxx not in visited:
+                    visited.add(nx + '_' + nxx)
+                    status, result = dfs(nxx, dx)
+                    visited.remove(nx + '_' + nxx)
+                    if status:
+                        ref[nxx+'_'+dx] = result
+                        return True, val*result
+                    else:
+                        ref[nxx+'_'+dx] = float(-1)
+                        
+            ref[nx+'_'+dx]=float(-1)
+            return False, float(-1)
+        
+        ret = []
+        for [nx, dx] in queries:
+            if nx==dx and (nx in eqDict):
+                ret.append(1)
+                continue
+            [status, result] = dfs(nx, dx)
+            ret.append(result)
+        return ret
+#https://zhuanlan.zhihu.com/p/67583873
