@@ -1,0 +1,20 @@
+class Solution:
+    def minimumTimeRequired(self, jobs: List[int], k: int) -> int:
+        workers = [0]*k
+        self.res = sys.maxsize
+        def dfs(curr):
+            if curr ==  len(jobs):
+                self.res = min(self.res, max(workers))
+                return
+            
+            seen = set()
+            for i in range(k):
+                if workers[i] not in seen and workers[i]+ jobs[curr]<self.res:
+
+                    seen.add(workers[i])
+                    workers[i]+=jobs[curr]
+                    dfs(curr+1)
+                    workers[i]-=jobs[curr]
+        dfs(0)
+        return self.res
+        
