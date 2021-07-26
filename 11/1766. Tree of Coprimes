@@ -1,0 +1,25 @@
+class Solution:
+    def getCoprimes(self, nums: List[int], edges: List[List[int]]) -> List[int]:
+        E = defaultdict(list)
+        for u, v in edges:
+            E[u].append(v)
+            E[v].append(u)
+        seen, ans = set([0]), [-1]*len(nums)
+        
+        def dfs(node, reverse_path):
+            for ancestor in reverse_path:
+                if math.gcd(nums[node], nums[ancestor])==1:
+                    ans[node] = ancestor
+                    break
+            for c in E[node]:
+                if c not in seen:
+                    seen.add(c)
+                    reverse_path_ = [node]
+                    for ancestor in reverse_path:
+                        if nums[ancestor]!=nums[node]:
+                            reverse_path_.append(ancestor)
+                    dfs(c, reverse_path_)
+                    reverse_path_ = None
+            reverse_path = None
+        root = dfs(0, list())
+        return ans
