@@ -1,0 +1,36 @@
+class Solution:
+    
+    def orientation(self, a, b, c):
+        ori = (b[1] - a[1]) * (c[0] - b[0]) - (c[1] - b[1]) * (b[0] - a[0])
+        if ori == 0:
+            return 0  # colinear
+        res = 1 if ori > 0 else 2  # clock or counterclock wise
+        return res
+    
+    def inbetween(self, a, b, c):
+        ori = (b[1]-a[1])*(c[0]-b[0])-(c[1]-b[1])*(b[0]-a[0])
+        if ori == 0 and min(a[0],c[0])<=b[0] and max(a[0], c[0])>=b[0] and min(a[1],c[1])<=b[1] and max(a[1],c[1])>=b[1]:
+            return True
+    
+    def outerTrees(self, points: List[List[int]]) -> List[List[int]]:
+        points.sort(key = lambda x:x[0])
+        lengh= len(points)
+        if lengh<4:
+            return points
+        hull = []
+        a=0
+        start=True
+        while a!=0 or start:
+            start = False
+            hull.append(points[a])
+            c = (a+1)%lengh
+            for b in range(lengh):
+                if self.orientation(points[a], points[b], points[c])==2:
+                    c=b
+                    
+            for b in range(lengh):
+                if b!=a and b!=c and self.inbetween(points[a], points[b], points[c]) and points[b] not in hull:
+                    hull.append(points[b])
+            a=c
+        return hull
+            
