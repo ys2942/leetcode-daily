@@ -1,0 +1,14 @@
+class Solution:
+    def scheduleCourse(self, courses: List[List[int]]) -> int:
+        courses.sort(key = lambda x:x[1])
+        queue = []
+        start = 0
+        for course in courses:
+            start += course[0]
+            heapq.heappush(queue, -course[0])
+            while start > course[1]:
+                tmp = heapq.heappop(queue)
+                start -= -tmp
+        return len(queue)
+    
+#https://blog.csdn.net/tmfighting/article/details/98604787?utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EOPENSEARCH%7Edefault-5.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EOPENSEARCH%7Edefault-5.control
