@@ -1,0 +1,18 @@
+class Solution:
+    def minInterval(self, intervals: List[List[int]], queries: List[int]) -> List[int]:
+        intervals.sort(reverse=True)
+        sorted_queries = sorted(enumerate(queries), key =lambda y:y[1])
+        ans = [-1]*len(queries)
+        active_intervals = []
+        for orig_index, point in sorted_queries:
+            while active_intervals and active_intervals[0][1]<point:
+                heapq.heappop(active_intervals)
+            while intervals and intervals[-1][0]<=point:
+                x, y = intervals.pop()
+                if y>=point:
+                    heapq.heappush(active_intervals, (y-x+1,y))
+            if active_intervals:
+                ans[orig_index] = active_intervals[0][0]
+        return ans
+    
+#https://leetcode.com/problems/minimum-interval-to-include-each-query/discuss/1186792/Python-A-classic-heap-question-explained
