@@ -1,0 +1,17 @@
+class Solution:
+    def maxPerformance(self, n: int, speed: List[int], efficiency: List[int], k: int) -> int:
+        es = [(e,s) for e, s in zip(efficiency, speed)]
+        es.sort(reverse=True)
+        q=[]
+        res = total_speed =0
+        for e,s in es:
+            total_speed +=s
+            max_e = e
+            heapq.heappush(q, s)
+            if len(q)>k:
+                total_speed-=heapq.heappop(q)
+            res = max(res, total_speed*max_e)
+        return res%(10**9+7)
+    
+#https://blog.csdn.net/zjucor/article/details/105081240
+#https://blog.csdn.net/qq_41685265/article/details/104935910
