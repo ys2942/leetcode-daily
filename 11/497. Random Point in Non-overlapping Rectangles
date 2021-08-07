@@ -1,0 +1,17 @@
+class Solution:
+
+    def __init__(self, rects: List[List[int]]):
+        self.rects, self.ranges, point_sum = rects, [], 0
+        for x_b1, y_b1, x_tr, y_tr in rects:
+            point_sum+=(x_tr -x_b1+1)*(y_tr-y_b1+1)
+            self.ranges.append(point_sum)
+
+    def pick(self) -> List[int]:
+        x1, y1, x2, y2 = self.rects[bisect.bisect_left(self.ranges, random.randint(1,self.ranges[-1]))]
+        return [random.randint(x1, x2),random.randint(y1, y2)]
+        
+#https://www.jianshu.com/p/aea1016435a2
+
+# Your Solution object will be instantiated and called as such:
+# obj = Solution(rects)
+# param_1 = obj.pick()
