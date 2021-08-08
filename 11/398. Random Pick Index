@@ -1,0 +1,44 @@
+class Solution:
+
+    def __init__(self, nums: List[int]):
+        self.num_indexes = {}
+        for i, num in enumerate(nums):
+            if self.num_indexes.get(num)!=None:
+                self.num_indexes.get(num).append(i)
+            else:
+                self.num_indexes[num] = [i]
+        
+        
+
+    def pick(self, target: int) -> int:
+        indexes = self.num_indexes[target]
+        return indexes[random.randint(0,len(indexes)-1)]
+    
+#https://www.cnblogs.com/liaohuiqiang/p/9853483.html
+
+
+# Your Solution object will be instantiated and called as such:
+# obj = Solution(nums)
+# param_1 = obj.pick(target)
+
+class Solution:
+
+    def __init__(self, nums: List[int]):
+        self.num_indexes = collections.defaultdict(list)
+        for i, num in enumerate(nums):
+            if i not in self.num_indexes[num]:
+                self.num_indexes[num].append(i)
+            
+        
+        
+
+    def pick(self, target: int) -> int:
+        indexes = self.num_indexes[target]
+        return indexes[random.randint(0,len(indexes)-1)]
+    
+#https://www.cnblogs.com/liaohuiqiang/p/9853483.html
+
+
+# Your Solution object will be instantiated and called as such:
+# obj = Solution(nums)
+# param_1 = obj.pick(target)
