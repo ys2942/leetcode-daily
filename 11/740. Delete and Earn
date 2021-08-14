@@ -1,0 +1,20 @@
+class Solution:
+    def deleteAndEarn(self, nums: List[int]) -> int:
+        if not nums:
+            return 0
+        dic=collections.Counter(nums)
+        dp=[0 for _ in range(max(nums)+1)]
+        if 1 in dic:
+            dp[1]=max(dp[0],dic[1])
+        else:
+            dp[1]=0
+        for i in range(2,len(dp)):
+            if i in dic:
+                dp[i]=max(dp[i-1],i*dic[i]+dp[i-2])
+            else:
+                dp[i]=dp[i-1]
+        return max(dp)
+#https://blog.csdn.net/maka_uir/article/details/85119818
+#思路：使用动态规划的方法解决问题，状态矩阵dp保存第i个值删除或者保留所获得的最大收益，状态转移矩阵为
+#dp[i] = max(dp[i - 1], i * dic[i] + dp[i - 2]) 。
+#https://my.oschina.net/u/4278385/blog/3922239
