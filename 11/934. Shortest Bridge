@@ -1,0 +1,48 @@
+class Solution:
+    def shortestBridge(self, A: List[List[int]]) -> int:
+        M, N = len(A), len(A[0])
+        dirs = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+        visited = [[0] * N for _ in range(M)]
+        hasfind = False
+        que = collections.deque()
+        for i in range(M):
+            for j in range(N):
+                if A[i][j] == 1:
+                    self.dfs(A, i, j, visited, que)
+                    hasfind = True
+                    break
+            if hasfind:
+                break
+        step = 0
+        while que:
+            size = len(que)
+            for _ in range(size):
+                i, j = que.popleft()
+                for d in dirs:
+                    x, y = i + d[0], j + d[1]
+                    if 0 <= x < M and 0 <= y < N:
+                        visited[x][y] = 1
+                        if A[x][y] == 1:
+                            return step
+                        elif A[x][y] == 0:
+                            A[x][y] = 2
+                            que.append((x, y))
+            step += 1
+        return -1
+
+    def dfs(self, A, i, j, visited, que):
+        if visited[i][j]: return
+        visited[i][j] = 1
+        M, N = len(A), len(A[0])
+        dirs = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+        if A[i][j] == 1:
+            que.append((i, j))
+            A[i][j] = 2
+            for d in dirs:
+                x, y = i + d[0], j + d[1]
+                if 0 <= x < M and 0 <= y < N:
+                    self.dfs(A, x, y, visited, que)
+#这道题目实际上是求两个岛的最短距离。 主要的思路应该是，找到其中一个岛，然后从其中一个岛出发，利用BFS不断扩张，直到碰到第二个岛。因为bfs在扩张的时候可以理解为从岛的边界一层一层的往外扩张，而最先碰到第二个岛的那个边界点，就是离第二个岛最近的点。具体流程如下：
+
+#用dfs或者bfs找到其中任意一个岛，并记录这个岛的所有边界点
+#利用之前所记录的边界点为起点，一层层向外扩张。这边要注意的是，一次扩张需要将所有的边界点都遍历一次，这样才是所有的点都向外走一步，每扩张一圈，距离加一。
