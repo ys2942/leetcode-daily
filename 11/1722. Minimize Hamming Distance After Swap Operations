@@ -1,0 +1,38 @@
+class UnionFind:
+    def __init__(self, n):
+        self.root =  list(range(n))
+        
+    def find(self, x):
+        if (x!=self.root[x]):
+            self.root[x] = self.find(self.root[x])
+        return self.root[x]
+    
+    def union(self,x,y):
+        self.root[self.find(x)]=self.find(y)
+
+class Solution:
+    def minimumHammingDistance(self, source: List[int], target: List[int], allowedSwaps: List[List[int]]) -> int:
+        n = len(source)
+        uf = UnionFind(n)
+        for x, y in allowedSwaps:
+            uf.union(x,y)
+        m=defaultdict(list)
+        for i in range(n):
+            m[uf.find(i)].append(i)
+        res = 0
+        for item in m:
+            indexes = m[item]
+            A = []
+            B = []
+            for idx in indexes:
+                A.append(source[idx])
+                B.append(target[idx])
+            cnt = 0
+            c1=Counter(A)
+            c2=Counter(B)
+            for k1 in c1:
+                if k1 in c2:
+                    cnt+=min(c1[k1],c2[k1])
+            res+=len(A)-cnt
+        return res
+#https://blog.csdn.net/w5688414/article/details/112444216
